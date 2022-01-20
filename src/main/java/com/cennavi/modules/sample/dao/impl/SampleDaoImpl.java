@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunpengyan on 2021/1/5.
@@ -30,5 +31,11 @@ public class SampleDaoImpl extends BaseDaoImpl<SampleBean> implements SampleDao 
             params.add("%"+name+"%");
         }
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(SampleBean.class), params.toArray());
+    }
+
+    @Override
+    public List<Map<String,Object>> listCensus() {
+        String sql="select id as myid,name as myname from sample";
+        return jdbcTemplate.queryForList(sql);
     }
 }

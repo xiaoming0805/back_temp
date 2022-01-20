@@ -60,4 +60,14 @@ public class SampleServiceImpl implements SampleService {
     public List<SampleBean> findAll() {
         return sampleDao.findAll();
     }
+
+    @Override
+    public List<Map<String,Object>> listCensus() {
+        return sampleDao.listCensus();
+    }
+
+    @Override
+    public void save(String name, Integer age, String code) {
+
+    }
 }

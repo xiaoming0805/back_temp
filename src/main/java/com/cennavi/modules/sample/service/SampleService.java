@@ -4,6 +4,7 @@ import com.cennavi.core.common.PageResult;
 import com.cennavi.modules.sample.beans.SampleBean;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunpengyan on 2021/1/5.
@@ -54,4 +55,18 @@ public interface SampleService {
      * @return List<SampleBean>
      */
     List<SampleBean> findAll();
+
+    /**
+     * 查询所有
+     * @return
+     */
+    List<Map<String,Object>> listCensus();
+
+    /**
+     *
+     * @param name
+     * @param age
+     * @param code
+     */
+    void save(String name,Integer age,String code);
 }

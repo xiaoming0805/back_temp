@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>定时任务配置</title>
+</head>
+<style type="text/css">
+    body{
+        margin:0px;
+        padding:0px;
+    }
+    table
+    {
+        border-collapse: collapse;
+        margin: 0 auto;
+        text-align: center;
+    }
+    table td, table th
+    {
+        border: 1px solid #cad9ea;
+        color: #666;
+        height: 30px;
+        font-size: 12px;
+        padding: 5px;
+    }
+    table thead th
+    {
+        background-color: #CCE8EB;
+        width: 100px;
+    }
+    table tr:nth-child(odd)
+    {
+        background: #fff;
+    }
+    table tr:nth-child(even)
+    {
+        background: #fff;
+    }
+    a{
+        text-decoration:none;
+        color:#000000;
+    }
+    a:hover{
+        color:#666666;
+    }
+    .title{
+        height: 10%;
+        background-color: #4887bd;
+        color: white;
+        line-height: 60px;
+        vertical-align: middle;
+        max-height: 60px;
+        min-height: 60px;
+    }
+    .black_overlay{
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index:1001;
+        -moz-opacity: 0.8;
+        opacity:.80;
+        filter: alpha(opacity=80);
+    }
+    .white_content {
+        display: none;
+        position: absolute;
+        top: 25%;  left: 10%;
+        width: 80%;
+        height: 50%;
+        padding: 16px;
+        border: 16px solid #4887bd;
+        background-color: white;
+        z-index:1002;
+        overflow: auto;
+    }
+    .add-btn{
+        width:100px;height:30px;background: green;color: #ffffff;text-align: center;font-size: 12px;line-height: 30px;cursor: pointer;margin-bottom: 20px;
+    }
+    .add-btn:hover{
+        background: #1ece1e;
+    }
+    .input_text{
+        height:25px;
+        border:1px solid #eee;
+        width:350px;
+    }
+    .save-btn{
+        width:100px;height:30px;background: #4887bd;color: #ffffff;
+        text-align: center;font-size: 12px;line-height: 30px;
+        cursor: pointer;margin: 20px auto;
+    }
+</style>
+<body>
+<div class="title">
+    <div style="margin:auto;width:1200px;text-align: left;height: 10%;min-height:60px;max-height: 60px;line-height: 60px;font-size: 20px;font-weight: bold;">定时任务管理</div>
+</div>
+<div style="width:1200px;margin: auto;padding:20px;">
+    <div class="add-btn" onclick="show()">添加任务</div>
+    <table id="mytb" style="width:100%;">
+
+    </table>
+</div>
+
+<div id="light" class="white_content">
+    <div style="width:100%;height:30px;">
+        编辑任务
+    </div>
+        <a href="javascript:void(0)" style="position: absolute;right:10px;top:10px;" onclick="guanbi()">关闭</a>
+    <div>
+        <table style="width:80%;margin:20px auto;position: relative;">
+            <input type="hidden" id="cron_id">
+            <tr>
+                <td style="width:100px;">任务名称</td>
+                <td style="text-align: left"><input type="text" class="input_text" id="cron_name"><span style="color: #999;">   例：警务任务</span></td>
+            </tr>
+            <tr>
+                <td>完整类名</td>
+                <td style="text-align: left"><input type="text" class="input_text"  id="cron_key"><span style="color: #999;">   如：cn.com.cennavi.任务类</span></td>
+            </tr>
+            <tr>
+                <td>cron表达式</td>
+                <td style="text-align: left"><input type="text" class="input_text"  id="cron_expression"><span style="color: #999;">   如：*/5 * * * * ?</span></td>
+            </tr>
+            <tr>
+                <td>任务描述</td>
+                <td style="text-align: left">
+                    <textarea style="width:80%;height:100px;" class="input_text" id="task_explain"></textarea>
+                </td>
+            </tr>
+
+
+        </table>
+        <div style="margin-top:50px;">
+            <div class="save-btn" onclick="saveTask()">保存</div>
+        </div>
+    </div>
+</div>
+<div id="fade" class="black_overlay"></div>
+<script>
+    function show() {
+        document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block';
+        document.getElementById("cron_id").value="";
+        document.getElementById("cron_name").value="";
+        document.getElementById("cron_key").value="";
+        document.getElementById("cron_expression").value="";
+        document.getElementById("task_explain").value="";
+    }
+
+    function guanbi() {
+        document.getElementById('light').style.display='none';
+        document.getElementById('fade').style.display='none';
+    }
+
+    window.onload=function(){
+        getTaskList();
+    };
+
+    function deleteTask(cron_id){
+        var r=confirm("确定要删除该任务吗？")
+        if (r==true) {
+            ajax({
+                url:"./task/deleteTask",
+                type:'post',
+                data:{
+                    "cron_id":cron_id
+                },
+                dataType:'json',
+                timeout:10000,
+                contentType:"application/json",
+                success:function(data) {
+                    getTaskList();
+                }
+            });
+        }
+    }
+
+    function toUpdate(cron_id){
+        show();
+        ajax({
+            url:"./task/toUpdateTask",
+            type:'post',
+            data:{
+                "cron_id":cron_id
+            },
+            dataType:'json',
+            timeout:10000,
+            contentType:"application/json",
+            success:function(data) {
+                var json=JSON.parse(data);
+                //console.log(json);
+                document.getElementById("cron_id").value=json.cron_id;
+                document.getElementById("cron_name").value=json.cron_name;
+                document.getElementById("cron_key").value=json.cron_key;
+                document.getElementById("cron_expression").value=json.cron_expression;
+                document.getElementById("task_explain").value=json.task_explain;
+            }
+        });
+    }
+    function saveTask(){
+        var cron_id=document.getElementById("cron_id").value;
+        var cron_name=document.getElementById("cron_name").value;
+        var cron_key=document.getElementById("cron_key").value;
+        var cron_expression=document.getElementById("cron_expression").value;
+        var task_explain=document.getElementById("task_explain").value;
+        if(cron_name==""){
+            alert("任务名称不可以为空！");
+            return;
+        }
+        if(cron_key==""){
+            alert("完整类名不可以为空！");
+            return;
+        }
+        if(cron_expression==""){
+            alert("cron表达式不可以为空！");
+            return;
+        }
+        ajax({
+            url:"./task/editTaskCron",
+            type:'post',
+            data:{
+                "cron_id":cron_id,
+                "cron_name":cron_name,
+                "cron_key":cron_key,
+                "cron_expression":cron_expression,
+                "task_explain":task_explain
+            },
+            dataType:'json',
+            timeout:10000,
+            contentType:"application/json",
+            success:function(data) {
+                if(data=="ok"){
+                    guanbi();
+                   // console.log(data);
+                    getTaskList();
+                }else{
+                    alert(data);
+                }
+
+            }
+        });
+
+    }
+    function getTaskList(){
+        //基本的使用实例
+        ajax({
+            url:"./task/taskList",
+            type:'post',
+            data:{
+            },
+            dataType:'json',
+            timeout:10000,
+            contentType:"application/json",
+            success:function(data){
+                data=JSON.parse(data);
+                let html="<tR style='background: #eee;'>" +
+                    "            <td style='width:30px;color:#000000;font-weight:bold;'>序号</td>" +
+                    "            <td style='width:200px;color:#000000;font-weight:bold;'>任务名称</td>" +
+                    "            <td style='width:150px;color:#000000;font-weight:bold;'>执行公式</td>" +
+                    "            <td style='width:100px;color:#000000;font-weight:bold;'>执行状态</td>" +
+                    "            <td style='width:500px;color:#000000;font-weight:bold;'>说明</td>" +
+                    "            <td style='width:200px;color:#000000;font-weight:bold;'>操作</td>" +
+                    "        </tR>";
+                for(var i=0;i<data.length;i++){
+                    var stt="";
+                    var btn_str="";
+                    if(data[i].status==1){
+                        btn_str="停止";
+                        stt="<span style='color:#0808cc'>正常运行</span>";
+                    }else if(data[i].status==2){
+                        btn_str="启动";
+                        stt="<span style='color:red'>停止运行</span>";
+                    }
+                    html+="<tr>" +
+                        "        <td>"+(i+1)+"</td>" +
+                        "        <td style='text-align: left;word-wrap: break-word;word-break: break-all;overflow: hidden;'>"+data[i].cron_name+"</td>" +
+                        "        <td>"+data[i].cron_expression+"</td>" +
+                        "        <td>"+stt+"</td>" +
+                        "        <td style='text-align: left;word-wrap: break-word;word-break: break-all;overflow: hidden;'" +
+                        ">"+data[i].task_explain+"</td>" +
+                        " <td>" +
+                        "<a href='javascript:void(0)' onclick='goTask(\""+data[i].cron_id+"\",\""+data[i].status+"\")'>"+btn_str+"</a>&nbsp;|&nbsp;" +
+                        "<a href='javascript:void(0)' onclick='toUpdate(\""+data[i].cron_id+"\")'>修改</a>&nbsp;|&nbsp;" +
+                        "<a href='javascript:void(0)' onclick='deleteTask(\""+data[i].cron_id+"\")'>删除</a>&nbsp;|&nbsp;" +
+                        "<a href='javascript:void(0)' onclick='runTask(\""+data[i].cron_key+"\")'>立即执行</a>" +
+                        " </td>" +
+                        "</tr>";
+                }
+                document.getElementById("mytb").innerHTML=html;
+               // console.log(data)
+            },//异常处理
+            error:function(e){
+                console.log(e);
+            }
+        })
+    }
+    function goTask(cron_id,status){
+        let status_str=1;
+        if(status==1){
+            status_str=2
+        }
+        var r=confirm("确定要（"+(status_str==1?'启动':'停止')+"）任务吗？")
+        if (r==true) {
+            ajax({
+                url:"./task/editTaskCron",
+                type:'post',
+                data:{
+                    "cron_id":cron_id,
+                    "status":status_str
+                },
+                dataType:'json',
+                timeout:10000,
+                contentType:"application/json",
+                success:function(data) {
+                    getTaskList();
+                 //   console.log(data);
+                }
+            });
+        }
+    }
+
+
+    function runTask(cronKey){
+        ajax({
+            url:"./task/runTaskCron",
+            type:'post',
+            data:{
+                "cronKey":cronKey
+            },
+            dataType:'json',
+            timeout:10000,
+            contentType:"application/json",
+            success:function(data) {
+                alert("已执行")
+            }
+        });
+    }
+
+
+    function ajax(options){
+        options = options ||{};  //调用函数时如果options没有指定，就给它赋值{},一个空的Object
+        options.type=(options.type || "GET").toUpperCase();/// 请求格式GET、POST，默认为GET
+        options.dataType=options.dataType || "json";    //响应数据格式，默认json
+
+        var params=formatParams(options.data);//options.data请求的数据
+
+        var xhr;
+        //考虑兼容性
+        if(window.XMLHttpRequest){
+            xhr=new XMLHttpRequest();
+        }else if(window.ActiveObject){//兼容IE6以下版本
+            xhr=new ActiveXobject('Microsoft.XMLHTTP');
+        }
+
+        //启动并发送一个请求
+        if(options.type=="GET"){
+            xhr.open("GET",options.url+"?"+params,true);
+            xhr.send(null);
+        }else if(options.type=="POST"){
+            xhr.open("post",options.url,true);
+
+            //设置表单提交时的内容类型
+            //Content-type数据请求的格式
+            xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xhr.send(params);
+        }
+
+        //    设置有效时间
+        setTimeout(function(){
+            if(xhr.readySate!=4){
+                xhr.abort();
+            }
+        },options.timeout)
+
+        //    接收
+        //     options.success成功之后的回调函数  options.error失败后的回调函数    //xhr.responseText,xhr.responseXML  获得字符串形式的响应数据或者XML形式的响应数据
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState==4){
+                var status=xhr.status;
+                if(status>=200&& status<300 || status==304){
+                    options.success&&options.success(xhr.responseText,xhr.responseXML);
+                }else{
+                    options.error&&options.error(status);
+                }
+            }
+        }
+    }
+
+    //格式化请求参数
+    function formatParams(data){
+        var arr=[];
+        for(var name in data){
+            arr.push(encodeURIComponent(name)+"="+encodeURIComponent(data[name]));
+        }
+        arr.push(("v="+Math.random()).replace(".",""));
+        return arr.join("&");
+    }
+
+
+</script>
+
+</body>
+</html>
+

@@ -1,54 +1,29 @@
 package com.cennavi.modules.sample.beans;
 
 import com.cennavi.core.common.MyTable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
-/**
- * Created by sunpengyan on 2021/1/5.
- */
+//接口文档的说明
+@ApiModel("demo类")
+@Data//不用写get set 方法。
 @MyTable("sample")//使用BeseDao时，需要bean名和表名一致，不一致则需要加此注解；
 public class SampleBean {
-    //id
+    /**
+     * 使用说明
+     * example 文档返回字段 样例数据
+     * position api文档中显示字段排序
+     * @JsonIgnore 注解  比如密码等关键数据 不想返回可以加此注释不返回 密码字段
+     */
+    @ApiModelProperty(value = "主键" )
     private String id;
-    //名称
+    @ApiModelProperty(value = "姓名",example = "张三")
     private String name;
-    //code
+    @ApiModelProperty(value = "编码",example = "zhangs")
     private String code;
-    //age
+    @ApiModelProperty(value = "年龄",example = "28", position = 1)
+    @JsonIgnore
     private int age;
-
-//    @IgnoreColumn("")  //使用BeseDao保存更新字段时，需要忽略的字段，使用此注解
-//    private String otherName;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-
-    }
 }

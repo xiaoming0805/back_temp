@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Created by sunpengyan on 2018/12/14.
  */
 @Configuration
-public class MyWebConfig implements  WebMvcConfigurer  {
+public class MyWebConfig implements WebMvcConfigurer {
 
     @Autowired
     private CommonInterceptor commonInterceptor;
@@ -26,6 +28,7 @@ public class MyWebConfig implements  WebMvcConfigurer  {
     /**
      * 过滤器两种方案 1.过滤器注册配置类：如下即可
      * 2.注解方式配置过滤器：在自定义过滤器上添加注解 @WebFilter(urlPatterns = {"/*"})  在，Application中添加@ServletComponentScan
+     *
      * @return
      */
     @Bean
@@ -36,4 +39,24 @@ public class MyWebConfig implements  WebMvcConfigurer  {
         return registration;
     }
 
+    /**
+     * 添加静态资源访问
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+    }
+
+    /**
+     * 跨域
+     *
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedHeaders("*")
+                .allowedMethods("*")
+                .allowedOrigins("*");
+    }
 }
