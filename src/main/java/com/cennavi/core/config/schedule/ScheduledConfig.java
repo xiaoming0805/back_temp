@@ -27,6 +27,8 @@ public class ScheduledConfig implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+
+        cronRepository.InitSql();
         for (SpringScheduledCron springScheduledCron : cronRepository.findAll()) {
             Class<?> clazz;
             Object task;

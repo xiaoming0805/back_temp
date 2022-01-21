@@ -5,6 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +21,7 @@ public class SpringScheduledCronRepository {
     private JdbcTemplate jdbcTemplate;
 
     public SpringScheduledCron findByCronKey(String cronKey) {
-        String sql = "select * from spring_scheduled_cron where cron_key=? order by createtime";
+        String sql = "select * from base_scheduled_cron where cron_key=? order by createtime";
         Map<String, Object> map = jdbcTemplate.queryForMap(sql, cronKey);
         SpringScheduledCron cron = new SpringScheduledCron();
         cron.setCron_id(map.get("cron_id").toString());
@@ -30,7 +34,7 @@ public class SpringScheduledCronRepository {
     }
 
     public List<SpringScheduledCron> findAll() {
-        String sql = "select * from spring_scheduled_cron order by createtime";
+        String sql = "select * from base_scheduled_cron order by createtime";
         List<SpringScheduledCron> list = new ArrayList<>();
         List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql);
         for (int i = 0; i < listmap.size(); i++) {
@@ -47,7 +51,7 @@ public class SpringScheduledCronRepository {
     }
 
     public void insertTask(String cron_key, String cron_expression, String task_explain, String status, String cron_name) {
-        String sql = "insert into spring_scheduled_cron values(?,?,?,?,?,?)";
+        String sql = "insert into base_scheduled_cron values(?,?,?,?,?,?)";
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         jdbcTemplate.update(sql, new Object[]{uuid, cron_key, cron_expression, task_explain, status, cron_name});
     }
@@ -79,18 +83,74 @@ public class SpringScheduledCronRepository {
         if (!"".equals(sqlvalue)) {
             sqlvalue = sqlvalue.substring(2, sqlvalue.length());
             System.out.println(sqlvalue);
-            jdbcTemplate.update("UPDATE spring_scheduled_cron SET " + sqlvalue + " WHERE cron_id = ?", param.toArray());
+            jdbcTemplate.update("UPDATE base_scheduled_cron SET " + sqlvalue + " WHERE cron_id = ?", param.toArray());
         }
     }
 
     public void deleteTask(String cron_id) {
-        String sql = "delete from spring_scheduled_cron where cron_id=?";
+        String sql = "delete from base_scheduled_cron where cron_id=?";
         jdbcTemplate.update(sql, new Object[]{cron_id});
     }
 
     public Map<String, Object> toUpdate(String cron_id) {
-        String sql = "select * from  spring_scheduled_cron where cron_id=?";
+        String sql = "select * from  base_scheduled_cron where cron_id=?";
         return jdbcTemplate.queryForMap(sql, cron_id);
     }
 
+    public void InitSql(){
+        //初始化 base 任务表
+        File f = new File("");
+        String cf = null;
+        try {
+            cf = f.getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String sql=readFileContent(cf+"/src/main/java/com/cennavi/core/config/schedule/initsql/spring_scheduled_cron.sql");
+        jdbcTemplate.update(sql);
+        String init_id="00000000000000000000000000000000";
+        List<Map<String,Object>> list=jdbcTemplate.queryForList("select * from base_scheduled_cron where cron_id=?",init_id);
+        if(list.size()==0){
+            String isnertsql="INSERT INTO public.base_scheduled_cron VALUES ('"+init_id+"', 'com.cennavi.core.config.schedule.demo.DemoTask', '*/30 * * * * ?', '111', '1', '日志清理任务', '2022-01-01 00:00:00');";
+            jdbcTemplate.update(isnertsql);
+        }
+    }
+
+    public static String readFileContent(String fileName) {
+        File file = new File(fileName);
+        BufferedReader reader = null;
+        StringBuffer sbf = new StringBuffer();
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String tempStr;
+            while ((tempStr = reader.readLine()) != null) {
+                sbf.append(tempStr);
+            }
+            reader.close();
+            return sbf.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        return sbf.toString();
+    }
+
+    public void insertLog(String cron_key,String begintime,String endtime,String state,String logs,String timer){
+        String sql = "insert into base_scheduled_logs values(?,?,?,?,?,?,?)";
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        jdbcTemplate.update(sql, new Object[]{uuid, cron_key, begintime, endtime, state, logs,timer});
+    }
+
+    public String deleteLog(String date){
+        String sql = "delete from base_scheduled_logs where begintime < ?";
+        int sum=jdbcTemplate.update(sql,date);
+        return "本次共删除数据："+sum+"条";
+    }
 }
