@@ -4,6 +4,7 @@ import com.cennavi.core.common.MyTable;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
 //调用公司封装方法 解析表名 使用
 @MyTable("spring_scheduled_cron")

@@ -49,7 +49,7 @@ public class SpringScheduledCronRepository {
 
     public List<Map<String, Object>> findList() {
         //   String sql = "select * from base_scheduled_cron  order by createtime";
-        String sql="select t3.*,t4.begintime,t4.endtime,t4.state,t4.logs,t4.timer from base_scheduled_cron t3 \n" +
+        String sql = "select t3.*,t4.begintime,t4.endtime,t4.state,t4.logs,t4.timer from base_scheduled_cron t3 \n" +
                 "left join (\n" +
                 "select t1.begintime,t1.endtime,t1.state,t1.logs,t1.timer,t1.cron_key from base_scheduled_logs t1 right join \n" +
                 "(SELECT max(begintime) as begintime , cron_key FROM base_scheduled_logs  GROUP BY cron_key) t2\n" +
@@ -109,7 +109,7 @@ public class SpringScheduledCronRepository {
         return jdbcTemplate.queryForMap(sql, cron_id);
     }
 
-    public void InitSql(){
+    public void InitSql() {
         //初始化 base 任务表
         File f = new File("");
         String cf = null;
@@ -118,12 +118,12 @@ public class SpringScheduledCronRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String sql=readFileContent(cf+"/src/main/java/com/cennavi/core/config/schedule/initsql/spring_scheduled_cron.sql");
+        String sql = readFileContent(cf + "/src/main/java/com/cennavi/core/config/schedule/initsql/spring_scheduled_cron.sql");
         jdbcTemplate.update(sql);
-        String init_id="00000000000000000000000000000000";
-        List<Map<String,Object>> list=jdbcTemplate.queryForList("select * from base_scheduled_cron where cron_id=?",init_id);
-        if(list.size()==0){
-            String isnertsql="INSERT INTO public.base_scheduled_cron VALUES ('"+init_id+"', 'com.cennavi.core.config.schedule.demo.DemoTask', '*/30 * * * * ?', '日志清理任务不可删除', '1', '日志清理任务', '2022-01-01 00:00:00');";
+        String init_id = "00000000000000000000000000000000";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from base_scheduled_cron where cron_id=?", init_id);
+        if (list.size() == 0) {
+            String isnertsql = "INSERT INTO public.base_scheduled_cron VALUES ('" + init_id + "', 'com.cennavi.core.config.schedule.demo.DemoTask', '*/30 * * * * ?', '日志清理任务不可删除', '1', '日志清理任务', '2022-01-01 00:00:00');";
             jdbcTemplate.update(isnertsql);
         }
     }
@@ -154,30 +154,30 @@ public class SpringScheduledCronRepository {
         return sbf.toString();
     }
 
-    public void insertLog(String cron_key,String begintime,String endtime,String state,String logs,String timer){
+    public void insertLog(String cron_key, String begintime, String endtime, String state, String logs, String timer) {
         String sql = "insert into base_scheduled_logs values(?,?,?,?,?,?,?)";
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        jdbcTemplate.update(sql, new Object[]{uuid, cron_key, begintime, endtime, state, logs,timer});
+        jdbcTemplate.update(sql, new Object[]{uuid, cron_key, begintime, endtime, state, logs, timer});
     }
 
-    public String deleteLog(String date){
+    public String deleteLog(String date) {
         String sql = "delete from base_scheduled_logs where begintime < ?";
-        int sum=jdbcTemplate.update(sql,date);
-        return "本次共删除数据："+sum+"条";
+        int sum = jdbcTemplate.update(sql, date);
+        return "本次共删除数据：" + sum + "条";
     }
 
-    public Map<String, Object> findLogs(String cron_key,int page,int size) {
-        int bg=size*(page-1);
-        int ed=size;
+    public Map<String, Object> findLogs(String cron_key, int page, int size) {
+        int bg = size * (page - 1);
+        int ed = size;
         String sql = "select *,COUNT ( * ) OVER ( ) AS total from base_scheduled_logs  where cron_key=? order by begintime desc limit ? offset ?";
-        List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql,cron_key,ed,bg);
-        Map<String,Object> map=new HashMap<>();
-        if(listmap.size()==0){
-            map.put("total",0);
-        }else{
-            map.put("total",listmap.get(0).get("total"));
+        List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql, cron_key, ed, bg);
+        Map<String, Object> map = new HashMap<>();
+        if (listmap.size() == 0) {
+            map.put("total", 0);
+        } else {
+            map.put("total", listmap.get(0).get("total"));
         }
-        map.put("rows",listmap);
+        map.put("rows", listmap);
         return map;
     }
 }
