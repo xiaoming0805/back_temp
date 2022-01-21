@@ -40,6 +40,7 @@ main
 │  │  │  │  └─interceptor
 │  │  │  │  │  └─CommonInterceptor.java //拦截器-需要登录时修改此类
 │  │  │  ├─modules //各模块代码
+│  │  │  │  ├─schedule //存放定时任务类 需要 implements ScheduledOfTask 参考com.cennavi.core.config.schedule.demo.DemoTask
 │  │  │  │  ├─module-name //模块代码，名称和数据库使用表的前缀对应
 │  │  │  │  │  ├─beans
 │  │  │  │  │  ├─controller
