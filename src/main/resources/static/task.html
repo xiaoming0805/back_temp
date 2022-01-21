@@ -104,7 +104,7 @@
 
     </table>
 </div>
-
+<!--新增编辑窗口-->
 <div id="light" class="white_content">
     <div style="width:100%;height:30px;">
         编辑任务
@@ -131,8 +131,6 @@
                     <textarea style="width:80%;height:100px;" class="input_text" id="task_explain"></textarea>
                 </td>
             </tr>
-
-
         </table>
         <div style="margin-top:50px;">
             <div class="save-btn" onclick="saveTask()">保存</div>
@@ -140,7 +138,103 @@
     </div>
 </div>
 <div id="fade" class="black_overlay"></div>
+
+
+<!--日志窗口-->
+<div id="logsview" class="white_content" style="overflow: hidden;height:520px;">
+    <div style="width:100%;height:30px;">
+        任务日志
+    </div>
+    <a href="javascript:void(0)" style="position: absolute;right:10px;top:10px;" onclick="logsguanbi()">关闭</a>
+    <div style="height:400px;overflow: auto;" id="datalogsview">
+        <table style="width:80%;margin:20px auto;position: relative;" id="logstable">
+
+        </table>
+    </div>
+    <div style="margin:20px auto;width:80%;text-align: center;">
+        <div class="save-btn" style="float:right">共<span id="total"></span>条数据</div>
+        <div class="save-btn" style="float:right" onclick="nextpage()">下一页</div>
+        <div class="save-btn" style="float:right" onclick="syypage()">上一页</div>
+    </div>
+</div>
+<div id="logsceng" class="black_overlay"></div>
 <script>
+    var page=1;
+    var size=20;
+    var total=0;
+    var cronKey_log="";
+    function nextpage(){
+        if(page*size>total){
+            alert("已经是最后一页");
+            return;
+        }
+        page=page+1;
+        setLogHtml();
+    }
+    function syypage(){
+        if(page==1){
+            alert("已经是第一页");
+            return;
+        }
+        page=page-1;
+        setLogHtml();
+    }
+    function lookLogs(cronKey){
+        cronKey_log=cronKey;
+        page=1;
+        total=0;
+        logsshow();
+        setLogHtml();
+    }
+    function setLogHtml(){
+        ajax({
+            url:"./task/findLogs",
+            type:'post',
+            data:{
+                "cron_key":cronKey_log,
+                "page":page,
+                "size":size
+            },
+            dataType:'json',
+            timeout:10000,
+            contentType:"application/json",
+            success:function(data) {
+                data=JSON.parse(data);
+                let json=data.rows;
+                total=data.total;
+                document.getElementById("total").innerHTML=total;
+                let html='<tr>\n' +
+                    '                <td style="width:100px;">开始执行时间</td>\n' +
+                    '                <td style="width:100px;">结束执行时间</td>\n' +
+                    '                <td style="width:50px;">执行状态</td>\n' +
+                    '                <td style="width:50px;">用时</td>\n' +
+                    '                <td style="width:200px;">执行日志</td>\n' +
+                    '            </tr>';
+                for(var i=0;i<json.length;i++){
+                    html+='<tr>' +
+                        '                <td style="width:100px;">'+json[i].begintime+'</td>' +
+                        '                <td style="width:100px;">'+json[i].endtime+'</td>\n' +
+                        '                <td style="width:50px;">'+(json[i].state=="1"?'正常':'异常')+'</td>\n' +
+                        '                <td style="width:50px;">'+json[i].timer+'</td>\n' +
+                        '                <td style="text-align:left;"><div style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;width:500px;cursor: pointer; " title="'+json[i].logs+'">'+json[i].logs+'</div></td>' +
+                        '            </tr>';
+                }
+                document.getElementById("logstable").innerHTML=html;
+                document.getElementById("datalogsview").scrollTo(0,0);
+            }
+        });
+    }
+
+    function logsshow() {
+        document.getElementById('logsview').style.display='block';
+        document.getElementById('logsceng').style.display='block';
+    }
+
+    function logsguanbi() {
+        document.getElementById('logsview').style.display='none';
+        document.getElementById('logsceng').style.display='none';
+    }
+
     function show() {
         document.getElementById('light').style.display='block';
         document.getElementById('fade').style.display='block';
@@ -161,6 +255,10 @@
     };
 
     function deleteTask(cron_id){
+        if(cron_id=="00000000000000000000000000000000"){
+            alert("日志清理任务属于系统任务，不可删除！")
+            return;
+        }
         var r=confirm("确定要删除该任务吗？")
         if (r==true) {
             ajax({
@@ -260,30 +358,39 @@
                 let html="<tR style='background: #eee;'>" +
                     "            <td style='width:30px;color:#000000;font-weight:bold;'>序号</td>" +
                     "            <td style='width:200px;color:#000000;font-weight:bold;'>任务名称</td>" +
-                    "            <td style='width:150px;color:#000000;font-weight:bold;'>执行公式</td>" +
+                    "            <td style='width:120px;color:#000000;font-weight:bold;'>执行公式</td>" +
+                    "            <td style='width:100px;color:#000000;font-weight:bold;'>运行状态</td>" +
                     "            <td style='width:100px;color:#000000;font-weight:bold;'>执行状态</td>" +
-                    "            <td style='width:500px;color:#000000;font-weight:bold;'>说明</td>" +
-                    "            <td style='width:200px;color:#000000;font-weight:bold;'>操作</td>" +
+                    "            <td style='width:400px;color:#000000;font-weight:bold;'>说明</td>" +
+                    "            <td style='width:250px;color:#000000;font-weight:bold;'>操作</td>" +
                     "        </tR>";
                 for(var i=0;i<data.length;i++){
                     var stt="";
                     var btn_str="";
                     if(data[i].status==1){
                         btn_str="停止";
-                        stt="<span style='color:#0808cc'>正常运行</span>";
+                        stt="<span style='color:#0808cc'>运行中</span>";
                     }else if(data[i].status==2){
                         btn_str="启动";
-                        stt="<span style='color:red'>停止运行</span>";
+                        stt="<span style='color:red'>停止中</span>";
+                    }
+                    var state="";
+                    if(data[i].state=="1"){
+                        state="<span style='color:green'>正常</span>";
+                    }else if(data[i].status=="2"){
+                        state="<span style='color:red'>异常</span>";
                     }
                     html+="<tr>" +
                         "        <td>"+(i+1)+"</td>" +
                         "        <td style='text-align: left;word-wrap: break-word;word-break: break-all;overflow: hidden;'>"+data[i].cron_name+"</td>" +
                         "        <td>"+data[i].cron_expression+"</td>" +
                         "        <td>"+stt+"</td>" +
+                        "        <td>"+state+"</td>" +
                         "        <td style='text-align: left;word-wrap: break-word;word-break: break-all;overflow: hidden;'" +
                         ">"+data[i].task_explain+"</td>" +
                         " <td>" +
                         "<a href='javascript:void(0)' onclick='goTask(\""+data[i].cron_id+"\",\""+data[i].status+"\")'>"+btn_str+"</a>&nbsp;|&nbsp;" +
+                        "<a href='javascript:void(0)' onclick='lookLogs(\""+data[i].cron_key+"\")'>日志</a>&nbsp;|&nbsp;" +
                         "<a href='javascript:void(0)' onclick='toUpdate(\""+data[i].cron_id+"\")'>修改</a>&nbsp;|&nbsp;" +
                         "<a href='javascript:void(0)' onclick='deleteTask(\""+data[i].cron_id+"\")'>删除</a>&nbsp;|&nbsp;" +
                         "<a href='javascript:void(0)' onclick='runTask(\""+data[i].cron_key+"\")'>立即执行</a>" +
@@ -322,6 +429,7 @@
             });
         }
     }
+
 
 
     function runTask(cronKey){

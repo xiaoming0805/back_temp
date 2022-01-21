@@ -11,14 +11,30 @@ main
 │  │  │  │  │  ├─MyConstant.java //系统通用的文字配置
 │  │  │  │  │  ├─MyTable.java  //实体类名和数据库表的映射注解，配合BaseDao使用
 │  │  │  │  │  ├─PageResult.java //分页，配合BaseDao使用
+│  │  │  │  │  ├─ResultObj.java //返回类 配合swagger使用
+│  │  │  │  │  ├─ResponseUtils.java //配合 controller使用 
 │  │  │  │  │  └─dao
 │  │  │  │  │  │  ├─BaseDao.java //封装jdbc的基础操作
 │  │  │  │  │  │  └─impl
 │  │  │  │  │  │  │  └─BaseDaoImpl.java //BaseDao实现类
 │  │  │  │  ├─config
+│  │  │  │  │  ├─schedule
+│  │  │  │  │  │  ├─demo  // schedule样例
+│  │  │  │  │  │  ├─initsql // schedule初始化sql 程序自动读取 
+│  │  │  │  │  │  ├─ScheduledConfig // schedule工具类
+│  │  │  │  │  │  ├─ScheduledOfTask // schedule父类，新建的定时任务必须implements它
+│  │  │  │  │  │  ├─SpringScheduledCron // schedule bean
+│  │  │  │  │  │  ├─SpringScheduledCronRepository // schedule dao层
+│  │  │  │  │  │  ├─SpringUtils // schedule 动态读取bean
+│  │  │  │  │  │  └─TaskController // schedule Controller 给前端页面调用操作定时任务
 │  │  │  │  │  ├─DataSourceConfig.java //多数据源配置
+│  │  │  │  │  ├─SwaggerConfig.java 
 │  │  │  │  │  ├─MyWebConfig.java 
-│  │  │  │  │  └─ScheduleConfig.java
+│  │  │  │  │  └─SpringContextUtil.java 
+│  │  │  │  ├─exception
+│  │  │  │  │  ├─GlobalExceptionHandler.java 
+│  │  │  │  │  ├─GlobalException.java 
+│  │  │  │  │  └─AuthException.java
 │  │  │  │  ├─filter
 │  │  │  │  │  └─WebContextFilter.java
 │  │  │  │  └─interceptor

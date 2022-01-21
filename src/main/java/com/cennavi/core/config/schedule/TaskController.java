@@ -28,9 +28,19 @@ public class TaskController {
      */
     @RequestMapping("/taskList")
     @ResponseBody
-    public List<SpringScheduledCron> taskList() {
-        List<SpringScheduledCron> list = cronRepository.findAll();
+    public  List<Map<String, Object>> taskList() {
+        List<Map<String, Object>> list = cronRepository.findList();
         return list;
+    }
+
+    /**
+     * 查看任务列表
+     */
+    @RequestMapping("/findLogs")
+    @ResponseBody
+    public  Map<String, Object> findLogs(String cron_key,Integer page,Integer size) {
+        Map<String, Object> map = cronRepository.findLogs(cron_key,page,size);
+        return map;
     }
 
     /**

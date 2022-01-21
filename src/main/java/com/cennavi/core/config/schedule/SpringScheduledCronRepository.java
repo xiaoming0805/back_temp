@@ -9,10 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 @Service
@@ -21,7 +18,7 @@ public class SpringScheduledCronRepository {
     private JdbcTemplate jdbcTemplate;
 
     public SpringScheduledCron findByCronKey(String cronKey) {
-        String sql = "select * from base_scheduled_cron where cron_key=? order by createtime";
+        String sql = "select * from base_scheduled_cron  where cron_key=? order by createtime";
         Map<String, Object> map = jdbcTemplate.queryForMap(sql, cronKey);
         SpringScheduledCron cron = new SpringScheduledCron();
         cron.setCron_id(map.get("cron_id").toString());
@@ -34,7 +31,7 @@ public class SpringScheduledCronRepository {
     }
 
     public List<SpringScheduledCron> findAll() {
-        String sql = "select * from base_scheduled_cron order by createtime";
+        String sql = "select * from base_scheduled_cron  order by createtime";
         List<SpringScheduledCron> list = new ArrayList<>();
         List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql);
         for (int i = 0; i < listmap.size(); i++) {
@@ -48,6 +45,21 @@ public class SpringScheduledCronRepository {
             list.add(cron);
         }
         return list;
+    }
+
+    public List<Map<String, Object>> findList() {
+        //   String sql = "select * from base_scheduled_cron  order by createtime";
+        String sql="select t3.*,t4.begintime,t4.endtime,t4.state,t4.logs,t4.timer from base_scheduled_cron t3 \n" +
+                "left join (\n" +
+                "select t1.begintime,t1.endtime,t1.state,t1.logs,t1.timer,t1.cron_key from base_scheduled_logs t1 right join \n" +
+                "(SELECT max(begintime) as begintime , cron_key FROM base_scheduled_logs  GROUP BY cron_key) t2\n" +
+                "on t1.begintime=t2.begintime and t1.cron_key=t2.cron_key\n" +
+                ") t4\n" +
+                "on t3.cron_key=t4.cron_key\n" +
+                "order by t3.createtime";
+        List<SpringScheduledCron> list = new ArrayList<>();
+        List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql);
+        return listmap;
     }
 
     public void insertTask(String cron_key, String cron_expression, String task_explain, String status, String cron_name) {
@@ -111,7 +123,7 @@ public class SpringScheduledCronRepository {
         String init_id="00000000000000000000000000000000";
         List<Map<String,Object>> list=jdbcTemplate.queryForList("select * from base_scheduled_cron where cron_id=?",init_id);
         if(list.size()==0){
-            String isnertsql="INSERT INTO public.base_scheduled_cron VALUES ('"+init_id+"', 'com.cennavi.core.config.schedule.demo.DemoTask', '*/30 * * * * ?', '111', '1', '日志清理任务', '2022-01-01 00:00:00');";
+            String isnertsql="INSERT INTO public.base_scheduled_cron VALUES ('"+init_id+"', 'com.cennavi.core.config.schedule.demo.DemoTask', '*/30 * * * * ?', '日志清理任务不可删除', '1', '日志清理任务', '2022-01-01 00:00:00');";
             jdbcTemplate.update(isnertsql);
         }
     }
@@ -152,5 +164,20 @@ public class SpringScheduledCronRepository {
         String sql = "delete from base_scheduled_logs where begintime < ?";
         int sum=jdbcTemplate.update(sql,date);
         return "本次共删除数据："+sum+"条";
+    }
+
+    public Map<String, Object> findLogs(String cron_key,int page,int size) {
+        int bg=size*(page-1);
+        int ed=size;
+        String sql = "select *,COUNT ( * ) OVER ( ) AS total from base_scheduled_logs  where cron_key=? order by begintime desc limit ? offset ?";
+        List<Map<String, Object>> listmap = jdbcTemplate.queryForList(sql,cron_key,ed,bg);
+        Map<String,Object> map=new HashMap<>();
+        if(listmap.size()==0){
+            map.put("total",0);
+        }else{
+            map.put("total",listmap.get(0).get("total"));
+        }
+        map.put("rows",listmap);
+        return map;
     }
 }
