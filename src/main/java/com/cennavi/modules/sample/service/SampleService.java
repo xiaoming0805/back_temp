@@ -17,6 +17,7 @@ public interface SampleService {
      * @return List<SampleBean>
      */
     List<SampleBean> listByName(String name);
+    List<Map<String,Object>> listByName1(String name);
 
     /**
      * 保存

@@ -29,6 +29,11 @@ public class SampleServiceImpl implements SampleService {
     }
 
     @Override
+    public List<Map<String,Object>> listByName1(String name) {
+        return sampleDao.listByName1(name);
+    }
+
+    @Override
     public void save(SampleBean bean) {
         sampleDao.save(bean);
     }

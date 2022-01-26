@@ -18,6 +18,7 @@ public interface SampleDao extends BaseDao<SampleBean> {
      * @return List<SampleBean>
      */
     List<SampleBean> listByName(String name);
+    List<Map<String,Object>> listByName1(String name);
 
     List<Map<String,Object>> listCensus();
 }

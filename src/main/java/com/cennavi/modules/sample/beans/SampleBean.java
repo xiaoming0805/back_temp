@@ -17,13 +17,13 @@ public class SampleBean {
      * position api文档中显示字段排序
      * @JsonIgnore 注解  比如密码等关键数据 不想返回可以加此注释不返回 密码字段
      */
-    @ApiModelProperty(value = "主键" )
+    @ApiModelProperty(value = "主键")
+    //@JsonIgnore
     private String id;
     @ApiModelProperty(value = "姓名",example = "张三")
     private String name;
     @ApiModelProperty(value = "编码",example = "zhangs")
     private String code;
     @ApiModelProperty(value = "年龄",example = "28", position = 1)
-    @JsonIgnore
     private int age;
 }

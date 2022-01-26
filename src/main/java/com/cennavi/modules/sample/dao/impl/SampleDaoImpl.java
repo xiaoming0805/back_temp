@@ -34,6 +34,17 @@ public class SampleDaoImpl extends BaseDaoImpl<SampleBean> implements SampleDao 
     }
 
     @Override
+    public List<Map<String,Object>> listByName1(String name) {
+        String sql = "select id,name from sample where 1=1 ";
+        List<Object> params = new ArrayList<>();
+        if(StringUtils.isNotBlank(name)) {
+            sql += "and name like ?";
+            params.add("%"+name+"%");
+        }
+        return jdbcTemplate.queryForList(sql,params.toArray());
+    }
+
+    @Override
     public List<Map<String,Object>> listCensus() {
         String sql="select id as myid,name as myname from sample";
         return jdbcTemplate.queryForList(sql);
