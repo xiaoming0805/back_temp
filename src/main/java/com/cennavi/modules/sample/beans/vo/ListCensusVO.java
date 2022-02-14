@@ -1,6 +1,5 @@
-package com.cennavi.modules.sample.vo;
+package com.cennavi.modules.sample.beans.vo;
 
-import com.cennavi.core.common.MyTable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -13,6 +13,12 @@ import java.util.LinkedList;
  * 日期工具类
  */
 public class DateUtils {
+
+    public static void main(String[] args) {
+        Date date = DateFormatUnit.DATE_TIME.getDateByStr("2022-02-14 11:30:00");
+        String dateStr = DateFormatUnit.DATE_TIME.getDateStr(date);
+    }
+
     /**
      * 给日期加年
      *

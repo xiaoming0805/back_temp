@@ -49,7 +49,7 @@ public class SampleServiceImpl implements SampleService {
     }
 
     @Override
-    public PageResult<SampleBean> findByPage(int pageNo, int pageSize, String name) {
+    public PageResult<SampleBean> findByPage(String name, int pageNo, int pageSize) {
         Map<String, String> where = new HashMap<>();
         if(StringUtils.isNotBlank(name)) {
             where.put("name","like"+name);

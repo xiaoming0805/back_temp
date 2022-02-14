@@ -44,7 +44,7 @@ public interface SampleService {
      * @param name 名称
      * @return
      */
-    PageResult<SampleBean> findByPage(int pageNo, int pageSize, String name);
+    PageResult<SampleBean> findByPage(String name, int pageNo, int pageSize);
 
     /**
      * 根据id查询

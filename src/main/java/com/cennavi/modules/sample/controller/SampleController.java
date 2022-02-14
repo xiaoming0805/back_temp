@@ -1,22 +1,22 @@
 package com.cennavi.modules.sample.controller;
 
+import com.cennavi.core.common.PageResult;
 import com.cennavi.core.common.ResponseUtils;
 import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.modules.sample.service.SampleService;
 
-import com.cennavi.modules.sample.vo.ListCensusVO;
 import io.swagger.annotations.*;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -29,11 +29,11 @@ public class SampleController extends ResponseUtils {
     @Autowired
     private SampleService sampleService;
 
-    @ApiOperation(value = "查询接口_返回bean,使用bean中的注释")
+    @ApiOperation(value = "查询接口_(返回bean,使用bean中的注释)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "姓名", required = true)
     })
-    @GetMapping("/listSampleByName")
+    @PostMapping("/listSampleByName")
     public ResultObj<List<SampleBean>> listSampleByName(@RequestParam(value = "name") String name) {
         /*List<Map<String, Object>> list = sampleService.listByName(name);
         List<SampleBean> json = toBean(list, SampleBean.class);*/
@@ -46,26 +46,37 @@ public class SampleController extends ResponseUtils {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "姓名", required = true)
     })
-    @GetMapping("/listSampleByName1")
+    @PostMapping("/listSampleByName1")
     public ResultObj listSampleByName1(@RequestParam(value = "name") String name) {
         List<Map<String, Object>> list = sampleService.listByName1(name);
         return success(list);
     }
 
 
-    @ApiOperation(value = "查询接口1_(返回map,需要单独写返回说明放在notes中)",
+    @ApiOperation(value = "分页查询接口_(返回map,需要单独写返回说明放在notes中)",
             notes = "返回值说明：{code:code, name:名称, age:年龄}")
-    @ApiImplicitParams({
+    @ApiImplicitParams({//请求参数说明
             @ApiImplicitParam(name = "name", value = "姓名"),
             @ApiImplicitParam(name = "pageNum", value = "页码"),
             @ApiImplicitParam(name = "pageSize", value = "每页的数量，limit")
     })
-    @GetMapping("/findByPage")
+    @PostMapping("/findByPage")
     public ResultObj findByPage(@RequestParam(value = "name",required = false) String name,
                                 @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
-        List<Map<String, Object>> list = sampleService.listByName1(name);
-        return success(list);
+        PageResult<SampleBean> result = sampleService.findByPage(name, pageNum, pageSize);
+        return success(result);
+    }
+
+
+    @ApiOperation(value = "分页查询接口2_(返回map,需要单独写返回说明放在notes中)",
+            notes = "返回值说明：{code:code, name:名称, age:年龄}")
+    @PostMapping("/findByPage2")
+    public ResultObj findByPage2(@RequestParam(value = "name",required = false) String name,
+                                @RequestParam(value = "pageNum",required = false,defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize) {
+        PageResult<SampleBean> result = sampleService.findByPage(name, pageNum, pageSize);
+        return success(result);
     }
 
     //SampleBean实体中已经加了Swagger注解
@@ -119,19 +130,26 @@ public class SampleController extends ResponseUtils {
             ba.setId(ss[0]);
             ba.setType(ss[1]);
             ba.setName(ss[2]);
-            //ba.setCenter("{\"type\":\"Point\",\"coordinates\":["+GeomtryUtils.getCenterOfPolygon(ss[5])+"]}");
-            if(StringUtils.isNotBlank(ss[4])) {
-                ba.setCenter(GeomtryUtils.wkt2GeoJson(ss[4]));
-            } else {
-                ba.setCenter(ss[4]);
-            }
-            ba.setGeometry(ss[5]);
             areas.add(ba);*/
         }
         //sampleService.batchSaveArea(areas);
-
         return success();
     }
 
+    /**
+     * 下载用户导入模板
+     */
+
+    @PostMapping("downloadFile")
+    public ResponseEntity<byte[]> downloadReport(@RequestParam(value = "filename") String filename) throws IOException {
+        String path = "e://";
+        //String filename = "t.txt";
+        File file = new File(path+filename);
+        HttpHeaders headers = new HttpHeaders();
+        String downloadFileName = new String(filename.getBytes("UTF-8"), "ISO-8859-1");  //少了这句，可能导致下载中文文件名的文档，只有后缀名的情况
+        headers.setContentDispositionFormData("attachment", downloadFileName);//告知浏览器以下载方式打开
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);//设置MIME类型
+        return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+    }
 
 }
