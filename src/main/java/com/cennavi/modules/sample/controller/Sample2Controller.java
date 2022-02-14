@@ -3,6 +3,7 @@ package com.cennavi.modules.sample.controller;
 import com.cennavi.core.common.ResponseUtils;
 import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.sample.beans.SampleBean;
+import com.cennavi.modules.sample.beans.vo.ListCensusVO;
 import com.cennavi.modules.sample.service.SampleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -48,16 +49,16 @@ public class Sample2Controller extends ResponseUtils {
      * 缺点：写大量的 VO 类文件 影响效率
      * 如果不想写大量的类文件。可以参考例子，允许简便写法
      */
-//    @ApiOperation(value = "统计类查询接口_02")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(paramType = "query", dataType = "Integer", name = "name", value = "姓名", example = "张三")
-//    })
-//    @GetMapping("/listCensus")
-//    public ResultObj<List<ListCensusVO>> listCensus(@RequestParam(value = "name") String name) {
-//        List<Map<String, Object>> list = sampleService.listCensus();
-//        List<ListCensusVO> json = toBean(list, ListCensusVO.class);
-//        return success(json);
-//    }
+    @ApiOperation(value = "统计类查询接口_02")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "Integer", name = "name", value = "姓名", example = "张三")
+    })
+    @GetMapping("/listCensus")
+    public ResultObj<List<ListCensusVO>> listCensus(@RequestParam(value = "name") String name) {
+        List<Map<String, Object>> list = sampleService.listCensus();
+        List<ListCensusVO> json = toBean(list, ListCensusVO.class);
+        return success(json);
+    }
 
     /**
      * 说明
