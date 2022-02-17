@@ -2,15 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>基础数据导入页面</title>
 </head>
 <body>
-    <h1>hello word!</h1>
+    <h1>基础数据表导入!</h1>
     
-    <form name="Form1" action="./sample/importArea" method="post"  enctype="multipart/form-data">
-        <h3>行政区划表(t_area.txt)导入</h3>
+    <form name="Form1" action="./baseImport/importArea" method="post"  enctype="multipart/form-data">
+        <h3>1.行政区划表(t_area.txt)导入,数据库表为base_area</h3>
         <input type="file" name="file">
         <input type="submit" value="upload"/>
     </form>
+    <form name="Form1" action="./baseImport/importRoad" method="post"  enctype="multipart/form-data">
+        <h3>2.道路表(t_road.txt)导入,数据库表为base_road</h3>
+        <input type="file" name="file">
+        <input type="submit" value="upload"/>
+    </form>
+    <form name="Form1" action="./baseImport/importRtic" method="post"  enctype="multipart/form-data">
+        <h3>3.rtic表(t_rtic.txt)导入,数据库表为base_rtic</h3>
+        <input type="file" name="file">
+        <input type="submit" value="upload"/>
+    </form>
+    <form name="Form1" action="./baseImport/importAreaRoadRtic" method="post"  enctype="multipart/form-data">
+        <h3>4.配置表关系表base_area_road_rtic(t_area_road_roadsection_rtic.txt)导入</h3>
+        <input type="file" name="file">
+        <input type="submit" value="upload"/>
+    </form>
+    <form name="Form1" action="./baseImport/importRticLink" method="post"  enctype="multipart/form-data">
+        <h3>5.base_rtic_link关系(导入correspondingOfxian表)导入</h3>
+        <input type="file" name="file">
+        <input type="submit" value="upload"/>
+    </form>
+    <form name="Form1" action="./baseImport/importLink" method="post"  enctype="multipart/form-data">
+        <h3>6.base_link表(导入Rjinan.csv表)导入</h3>
+        <input type="file" name="file">
+        <input type="submit" value="upload"/>
+    </form>
+    <h4>7.自由流(rticfreespeed表)，直接使用navicat导入csv文件即可，字段需要对应，第一列rticid,第二列kind,第三列speed,四列samplenum,五列length,六列weight,七列version;
+          其中rtic与ertic导入方法和字段都一致，唯一不同是ertic数据中speed字段可能出现-1,是因为没计算出自由流，可删除这样数据</h4>
+    <h4>8.pattern(rticpattern表)，直接使用navicat导入csv文件即可，字段需要对应，第一列week,第二列time,第三列rticid,四列kind,五列travltime,七列length,八列speed
+        其中rtic与ertic导入方法和字段都一致，唯一不同是ertic数据中week字段多出一个W,需要更新语句去掉</h4>
 </body>
 </html>
