@@ -1,0 +1,37 @@
+package com.cennavi.modules.loginrsa.dao.impl;
+
+import com.cennavi.modules.loginrsa.dao.LoginDao;
+import com.cennavi.modules.sample.beans.SampleBean;
+import com.cennavi.modules.sample.dao.SampleDao;
+import com.cennavi.core.common.dao.impl.BaseDaoImpl;
+import com.cennavi.modules.track.beans.Track;
+import com.cennavi.modules.track.dao.TrackDao;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by sunpengyan on 2021/1/5.
+ */
+@Repository
+public class LoginDaoImpl extends BaseDaoImpl<Object> implements LoginDao {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+
+    @Override
+    public List<Map<String, Object>> getUser(String username, String password) {
+        List<String> params = new ArrayList<>();
+        String sql = "select * from sys_user where username=? and password=?";
+        params.add(username);
+        params.add(password);
+        return jdbcTemplate.queryForList(sql,params.toArray());
+    }
+}

@@ -104,6 +104,11 @@
 			<!--<version>2.11.2</version>-->
 		<!--</dependency>-->
 		<!--&lt;!&ndash;以下依赖根据需要自主增删&ndash;&gt;-->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
 
 
 	</dependencies>
