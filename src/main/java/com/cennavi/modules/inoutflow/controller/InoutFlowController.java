@@ -68,8 +68,6 @@ public class InoutFlowController extends ResponseUtils {
     public ResultObj<List<OdFlow>> getOdFlow(@RequestParam(value = "date") String date, String code, Integer odType) {
         List<Map<String,Object>> list = inoutFlowService.getFlowOD(odType,code,date);
         List<OdFlow> odFlows = toBean(list,OdFlow.class);
-//        System.out.println(odFlows);
-        System.out.println(success(odFlows).toString());
         return success(odFlows);
     }
 
