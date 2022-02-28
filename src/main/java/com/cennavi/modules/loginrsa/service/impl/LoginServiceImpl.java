@@ -42,8 +42,8 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public boolean login(String username, String password) {
         //密码是通过RSA公钥加密过的，目前给前端使用公钥  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7qdEg98tYYRtSkOk9AxEETZIKksEPoc9pPy0SWYP3hFJL2LwNNLH+mX+8dbCFtedH09gMw3gLDuwQePrQU59070rMmGK7nkarOYjTZF2IYdHK4hQRMlEQQIrUK6MQCZrlXbi5SNA5cmxidhPmduT2QFsrfdbmtKjPvXa/1lku8wIDAQAB
-        String pwd = RSAUtils.privateDecrypt(password);//将密码进行解密
-        List<Map<String,Object>> list = loginDao.getUser(username,pwd);
+       // String pwd = RSAUtils.privateDecrypt(password);//将密码进行解密
+        List<Map<String,Object>> list = loginDao.getUser(username,password);
         boolean flag = false;
         if(list.size() > 0){
             flag = true;//校验通过，可能需要生成token返回前端，项目中自行定制

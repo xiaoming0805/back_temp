@@ -1,0 +1,1 @@
+var my_api_server_url = 'http://localhost:8881/service_template2';

@@ -227,6 +227,27 @@ public class RSAUtils {
     }
 
     /**
+     * 私钥加密
+     *
+     * @param data
+     * @return
+     */
+    public static String privateEncrypt(String data) {
+        try {
+            //通过PKCS#8编码的Key指令获得私钥对象
+            KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+            PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(PRIVATE_KEY));
+            RSAPrivateKey key = (RSAPrivateKey) keyFactory.generatePrivate(pkcs8KeySpec);
+            Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            //return Base64.encode(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes(CHARSET), key.getModulus().bitLength()));
+            return Base64.encodeBase64String(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes("UTF-8"), key.getModulus().bitLength()));
+        } catch (Exception e) {
+            throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
+        }
+    }
+
+    /**
      * 公钥解密
      *
      * @param data

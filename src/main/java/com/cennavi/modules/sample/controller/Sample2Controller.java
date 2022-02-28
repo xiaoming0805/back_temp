@@ -9,6 +9,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +75,10 @@ public class Sample2Controller extends ResponseUtils {
     @GetMapping("/listCensusEasy")
     public ResultObj listCensusEasy(@RequestParam(value = "name") String name) {
         List<Map<String, Object>> list = sampleService.listCensus();
-        return success(list);
+        System.out.println(list);
+        JSONArray array=JSONArray.fromObject(list);
+        System.out.println(array);
+        return success(array);
     }
 
     /**

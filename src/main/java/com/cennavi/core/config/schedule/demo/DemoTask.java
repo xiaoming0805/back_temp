@@ -20,7 +20,7 @@ public class DemoTask implements ScheduledOfTask {
      * @return
      */
     public String work() {
-        String dateStr = DateUtils.DateFormatUnit.DATE.getDateStr(DateUtils.addDays(new Date(), -30));
+        String dateStr = DateUtils.DateFormatUnit.DATE.getDateStr(DateUtils.addDays(new Date(), -1));
         String mes = cronRepository.deleteLog(dateStr);
         return mes;//例如: 执行成功/本次同步卡口数据 2000条，过车数据100000条。
     }
