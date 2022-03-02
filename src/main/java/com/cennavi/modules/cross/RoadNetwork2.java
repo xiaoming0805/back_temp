@@ -75,7 +75,7 @@ public class RoadNetwork2 {
 			List<String> value = entry.getValue();
 			Node node = nodeMap.get(key);
 			if(node != null){
-				System.out.println("不为null");
+//				System.out.println("不为null");
 				List<String> linkList = node.getLinkList();
 				linkList.addAll(value);
 			}
