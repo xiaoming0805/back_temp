@@ -96,7 +96,7 @@ public class ImportController extends ResponseUtils {
      * 导入t_raod.txt文件到base_road表中
      * @return
      */
-    @RequestMapping("/importRoad")
+    @PostMapping("/importRoad")
     @ResponseBody
     public String importRoad(@RequestParam(value = "file") MultipartFile file) {
         try {
@@ -153,7 +153,7 @@ public class ImportController extends ResponseUtils {
      * 导入 rtic表  -》 rtic
      * @return
      */
-    @RequestMapping("/importRtic")
+    @PostMapping("/importRtic")
     @ResponseBody
     public String importRtic(@RequestParam(value = "file") MultipartFile file) {
         try {
@@ -204,7 +204,7 @@ public class ImportController extends ResponseUtils {
      * 导入BaseAreaRoadRtic 配置表之间的关系  -》 t_area_road_roadsection_rtic
      * @return
      */
-    @RequestMapping("/importAreaRoadRtic")
+    @PostMapping("/importAreaRoadRtic")
     @ResponseBody
     public String importAreaRoadRtic(@RequestParam(value = "file") MultipartFile file) {
         try {
@@ -240,7 +240,7 @@ public class ImportController extends ResponseUtils {
      * 导入静态数据 r表  -》 link
      * @return
      */
-    @RequestMapping("/importLink")
+    @PostMapping("/importLink")
     @ResponseBody
     public String importLink(@RequestParam(value = "file") MultipartFile file) {
 
@@ -328,7 +328,7 @@ public class ImportController extends ResponseUtils {
      * 导入correspondingOfxian表  -》 base_rtic_link
      * @return
      */
-    @RequestMapping("/importRticLink")
+    @PostMapping("/importRticLink")
     @ResponseBody
     public String importRticLink(@RequestParam(value = "file") MultipartFile file) {
         try {

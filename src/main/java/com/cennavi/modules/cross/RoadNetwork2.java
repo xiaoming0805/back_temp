@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
  * 2.执行main方法，得到插入路口表的sql
  * 3.数据库中执行
  */
-@Component
+//@Component
 public class RoadNetwork2 {
 
 	private static Map<String, Link> linkMap;

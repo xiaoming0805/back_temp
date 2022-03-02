@@ -6,6 +6,7 @@ import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.modules.sample.service.SampleService;
 
+import com.cennavi.utils.ExcelUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -136,10 +139,37 @@ public class SampleController extends ResponseUtils {
         return success();
     }
 
+    @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
+    @ApiOperation(value = "导入excel数据")
+    @PostMapping("/importExcel")
+    public ResultObj importExcel(@RequestParam(value = "file") MultipartFile file) throws IOException {
+        String filename=file.getOriginalFilename();
+        InputStream in = file.getInputStream();
+        //解析excel中的数据
+        List<String> datas = ExcelUtil.importLayerDataFromExcel(in, filename);
+        return success();
+    }
+
+    @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
+    @ApiOperation(value = "导出excel")
+    @PostMapping("/exportExcel")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        //设备属性
+        String ss = "用户名(必填),密码(必填),真实名称(必填),所属组织id(必填),角色名称(必填),联系电话,用户状态,描述";
+        String[] headers = ss.split(",");
+
+        //查询要导出的数据
+        List<Map<String,Object>> list = new ArrayList<>();
+
+        response.reset();
+        response.setContentType("application/excel");
+        response.setHeader("content-disposition", "attachment; filename=userinfo.xls");
+        ExcelUtil.exportMapInfoToExcel(list, headers,"userinfo",response.getOutputStream());
+    }
+
     /**
      * 下载用户导入模板
      */
-
     @PostMapping("downloadFile")
     public ResponseEntity<byte[]> downloadReport(@RequestParam(value = "filename") String filename) throws IOException {
         String path = "e://";

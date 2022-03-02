@@ -19,18 +19,22 @@ import java.util.Map;
 /**
  * Excel导入导出工具类
  * Created by sunpengyan on 2017/9/12.
+ <dependency>
+ <groupId>org.apache.poi</groupId>
+ <artifactId>poi-ooxml</artifactId>
+ <version>3.12</version>
+ </dependency>
  */
 public class ExcelUtil {
     private static final Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
 
+    public static void main(String[] args) {
+
+
+    }
     /**
      * @param @param  is
      * @param @param  excelFileName
-     * @param @return
-     * @param @throws IOException
-     * @return Workbook
-     * @throws
-     * @Title: createWorkbook
      * @Description: 判断excel文件后缀名，生成不同的workbook
      */
     public static Workbook createWorkbook(InputStream is, String excelFileName) throws IOException {
@@ -55,6 +59,12 @@ public class ExcelUtil {
         return workbook.getSheetAt(0);
     }
 
+    /**
+     * 读取excel内容，单元格数据之间用逗号分隔，按行输出
+     * @param is
+     * @param excelFileName
+     * @return
+     */
     public static List<String> importLayerDataFromExcel(InputStream is, String excelFileName) {
         List<String> list = new ArrayList<>();
         try {
