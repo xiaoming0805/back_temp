@@ -9,6 +9,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ *
+ <dependency>
+ <groupId>com.vector</groupId>
+ <artifactId>vector</artifactId>
+ <version>1.0</version>
+ <scope>system</scope>
+ <systemPath>${basedir}/src/main/java/com/cennavi/modules/pbf/lib/vector-1.0.jar</systemPath>
+ </dependency>
+ */
 public class TileUtils {
 	
 	/**

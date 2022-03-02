@@ -52,7 +52,7 @@ public class SampleServiceImpl implements SampleService {
     public PageResult<SampleBean> findByPage(String name, int pageNo, int pageSize) {
         Map<String, String> where = new HashMap<>();
         if(StringUtils.isNotBlank(name)) {
-            where.put("name","like"+name);
+            where.put("name like", name);
         }
         return sampleDao.findByPage(pageNo, pageSize, where);
     }
