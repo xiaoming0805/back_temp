@@ -255,6 +255,19 @@ public class GeomtryUtils {
         return Gx+","+Gy;
     }
 
+    /**
+     * 计算两点之间实际距离
+     * @param wkt1
+     * @param wkt2
+     * @return 米
+     */
+    public static double getDistanceForWkt(String wkt1, String wkt2) {
+        String[] p1 = wkt1.replace(")", "").split("\\(")[1].split(" ");
+        String[] p2 = wkt2.replace(")", "").split("\\(")[1].split(" ");
+
+        return GetDistance(Double.parseDouble(p1[0]),Double.parseDouble(p1[1]),Double.parseDouble(p2[0]),Double.parseDouble(p2[1]));
+    }
+
     private static double rad(double d) {
         return d * Math.PI / 180.0;
     }
