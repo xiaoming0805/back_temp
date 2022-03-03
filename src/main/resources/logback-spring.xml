@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+<configuration>
+	<jmxConfigurator />
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+	<property name="LOG_HOME" value="/data/cennavi/service/service_template2/logs" />
+	<!-- 控制台输出日志 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</layout>
+	</appender>
+	<!-- 文件输出日志 (文件大小策略进行文件输出，超过指定大小对文件备份) -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--<File>${catalina.common}/logs/tp_view_three_server.log</File>-->
+		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+			<!--<FileNamePattern>${LOG_HOME}/tp_view_three_server.%d{yyyy-MM-dd}.log-->
+			<!--</FileNamePattern>-->
+			<!--<MaxHistory>1</MaxHistory>-->
+		<!--</rollingPolicy>-->
+		<!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+			<!--<Pattern>%d{yyyy-MM-dd HH:mm:ss} -%msg%n</Pattern>-->
+		<!--</layout>-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${LOG_HOME}/service_template.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>3</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="com.cennavi" level="info" additivity="false">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</logger>
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
