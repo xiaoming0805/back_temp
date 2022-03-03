@@ -1,5 +1,6 @@
 package com.cennavi.core.config.schedule;
 
+import com.cennavi.core.config.schedule.initsql.InitTaskSql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -118,7 +119,8 @@ public class SpringScheduledCronRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String sql = readFileContent(cf + "/src/main/java/com/cennavi/core/config/schedule/initsql/spring_scheduled_cron.sql");
+       // String sql = readFileContent(cf + "/src/main/java/com/cennavi/core/config/schedule/initsql/spring_scheduled_cron.sql");
+        String sql=InitTaskSql.INIT_SQL;
         jdbcTemplate.update(sql);
         String init_id = "00000000000000000000000000000000";
         List<Map<String, Object>> list = jdbcTemplate.queryForList("select * from base_scheduled_cron where cron_id=?", init_id);
