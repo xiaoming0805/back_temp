@@ -6,9 +6,11 @@ import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.modules.sample.service.SampleService;
 
+import com.cennavi.search.common.JsonUtil;
 import com.cennavi.utils.ExcelUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FileUtils;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class SampleController extends ResponseUtils {
     @Autowired
     private SampleService sampleService;
 
-    @ApiOperation(value = "查询接口_(返回bean,使用bean中的注释)")
+    @ApiOperation(value = "查询模板样例_(返回bean,使用bean中的注释)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "姓名", required = true)
     })
@@ -44,19 +46,32 @@ public class SampleController extends ResponseUtils {
         return success(list);
     }
 
-    @ApiOperation(value = "查询接口1_(返回map,需要单独写返回说明放在notes中)",
+    @ApiOperation(value = "查询模板样例_测试json(返回bean,使用bean中的注释)")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "姓名", required = true)
+    })
+    @PostMapping("/listSampleByNameJson")
+    public String listSampleByNameJson(@RequestParam(value = "name") String name) {
+        /*List<Map<String, Object>> list = sampleService.listByName(name);
+        List<SampleBean> json = toBean(list, SampleBean.class);*/
+        List<SampleBean> list = sampleService.listByName(name);
+        return JsonUtil.toJSONString(success(list));
+    }
+
+    @ApiOperation(value = "查询模板样例1_(返回map,需要单独写返回说明放在notes中)",
             notes = "返回值说明：{code:code, name:名称, age:年龄}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "姓名", required = true)
     })
-    @PostMapping("/listSampleByName1")
-    public ResultObj listSampleByName1(@RequestParam(value = "name") String name) {
+    @GetMapping("/listSampleByName1")
+    public ResultObj listSampleByName1(@RequestParam(value = "name",required = false) String name) {
         List<Map<String, Object>> list = sampleService.listByName1(name);
         return success(list);
+//        return JsonUtil.toJSONString(success(list));
     }
 
 
-    @ApiOperation(value = "分页查询接口_(返回map,需要单独写返回说明放在notes中)",
+    @ApiOperation(value = "分页查询模板样例_(返回map,需要单独写返回说明放在notes中)",
             notes = "返回值说明：{code:code, name:名称, age:年龄}")
     @ApiImplicitParams({//请求参数说明
             @ApiImplicitParam(name = "name", value = "姓名"),
@@ -72,7 +87,7 @@ public class SampleController extends ResponseUtils {
     }
 
 
-    @ApiOperation(value = "分页查询接口2_(返回map,需要单独写返回说明放在notes中)",
+    @ApiOperation(value = "分页查询模板样例2_(返回map,需要单独写返回说明放在notes中)",
             notes = "返回值说明：{code:code, name:名称, age:年龄}")
     @PostMapping("/findByPage2")
     public ResultObj findByPage2(@RequestParam(value = "name",required = false) String name,
@@ -83,7 +98,7 @@ public class SampleController extends ResponseUtils {
     }
 
     //SampleBean实体中已经加了Swagger注解
-    @ApiOperation(value = "保存")
+    @ApiOperation(value = "保存模板样例")
     @PostMapping("/save")
     public ResultObj save(SampleBean bean) {
         if(bean.getId()==null) {
@@ -93,7 +108,7 @@ public class SampleController extends ResponseUtils {
         return success();
     }
 
-    @ApiOperation(value = "修改")
+    @ApiOperation(value = "修改模板样例")
     @PostMapping("/update")
     public ResultObj update(SampleBean bean) {
         SampleBean sa = sampleService.findById(bean.getId());
@@ -106,7 +121,7 @@ public class SampleController extends ResponseUtils {
         return success();
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "删除模板样例")
     @PostMapping("/delete")
     public ResultObj update(@RequestParam String id) {
         sampleService.delete(id);
@@ -115,7 +130,7 @@ public class SampleController extends ResponseUtils {
 
 
     @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
-    @ApiOperation(value = "导入t_area文本数据")
+    @ApiOperation(value = "导入t_area文本数据样例")
     @PostMapping("/importArea")
     public ResultObj importArea(@RequestParam(value = "file") MultipartFile file) throws IOException {
         InputStream in = file.getInputStream();
@@ -140,7 +155,7 @@ public class SampleController extends ResponseUtils {
     }
 
     @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
-    @ApiOperation(value = "导入excel数据")
+    @ApiOperation(value = "导入excel数据样例")
     @PostMapping("/importExcel")
     public ResultObj importExcel(@RequestParam(value = "file") MultipartFile file) throws IOException {
         String filename=file.getOriginalFilename();
@@ -151,7 +166,7 @@ public class SampleController extends ResponseUtils {
     }
 
     @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
-    @ApiOperation(value = "导出excel")
+    @ApiOperation(value = "导出excel样例")
     @PostMapping("/exportExcel")
     public void exportExcel(HttpServletResponse response) throws IOException {
         //设备属性
@@ -170,6 +185,10 @@ public class SampleController extends ResponseUtils {
     /**
      * 下载用户导入模板
      */
+
+
+
+    @ApiOperation(value = "文件下载样例")
     @PostMapping("downloadFile")
     public ResponseEntity<byte[]> downloadReport(@RequestParam(value = "filename") String filename) throws IOException {
         String path = "e://";

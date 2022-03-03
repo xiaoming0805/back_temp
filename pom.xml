@@ -173,6 +173,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>service_template2</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

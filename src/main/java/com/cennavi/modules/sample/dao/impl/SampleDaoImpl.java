@@ -24,7 +24,7 @@ public class SampleDaoImpl extends BaseDaoImpl<SampleBean> implements SampleDao 
 
     @Override
     public List<SampleBean> listByName(String name) {
-        String sql = "select id,name from sample where 1=1 ";
+        String sql = "select id,name,code from sample where 1=1 ";
         List<Object> params = new ArrayList<>();
         if(StringUtils.isNotBlank(name)) {
             sql += "and name like ?";
@@ -35,7 +35,7 @@ public class SampleDaoImpl extends BaseDaoImpl<SampleBean> implements SampleDao 
 
     @Override
     public List<Map<String,Object>> listByName1(String name) {
-        String sql = "select id,name from sample where 1=1 ";
+        String sql = "select id,name,st_asgeojson(geom) as geom from sample where 1=1 ";
         List<Object> params = new ArrayList<>();
         if(StringUtils.isNotBlank(name)) {
             sql += "and name like ?";
