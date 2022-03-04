@@ -3,7 +3,7 @@ layui.define(function (exports) {
      * 用于动态切换环境地址
      */
     //默认地址
-    var defUrl = 'http://localhost:8181/service_template2';
+    var defUrl = 'http://localhost:8881/service_template2';
     //当前环境的api地址
     var apiUrl;
     try{

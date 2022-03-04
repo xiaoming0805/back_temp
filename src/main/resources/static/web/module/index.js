@@ -200,7 +200,7 @@ layui.define(['config', 'admin', 'layer', 'laytpl', 'element', 'form'], function
                 } else {
                     layer.msg('获取用户失败', {icon: 2});
                     config.removeToken();
-                    location.replace('login.html');
+                //    location.replace('login.html');
                 }
             }, 'GET');
         },
