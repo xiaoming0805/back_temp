@@ -96,6 +96,7 @@
                 },
                 success: function (data) {
                     //{"datas":{"access_token":"2c62eb46-b78d-4e1c-b223-54d9a390f86b","token_type":"bearer","refresh_token":"c90b2aea-c1de-4b91-ae7b-128fc5458f7d","expires_in":3599,"scope":"app","account_type":"admin"},"resp_code":0,"resp_msg":""}
+                    console.log(data);
                     if (data.code === 200) {
                         config.putToken(data.data.datas);
                         layer.msg('登录成功', {icon: 1, time: 500}, function () {

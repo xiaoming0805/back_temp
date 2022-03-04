@@ -5,9 +5,12 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.cennavi.core.exception.GlobalException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -220,7 +223,16 @@ public class SearchBuilder {
         SearchHits searchHits = response.getHits();
         long totalCnt = searchHits.getTotalHits().value;
         List<JsonNode> list = getList(searchHits);
-        return ESPageResult.<JsonNode>builder().data(list).code(0).count(totalCnt).build();
+        JSONArray alist=JSONArray.fromObject(list.toString());
+        List<JsonNode> newlist=new ArrayList();
+        ObjectMapper mapper = new ObjectMapper();
+        for(int i=0;i<alist.size();i++){
+            JSONObject obj=alist.getJSONObject(i);
+            obj.put("timestamp",obj.get("@timestamp"));
+            JsonNode treeNode = mapper.readTree(obj.toString());
+            newlist.add(treeNode);
+        }
+        return ESPageResult.<JsonNode>builder().data(newlist).code(0).count(totalCnt).build();
     }
 
     /**

@@ -34,7 +34,7 @@ public class SysLogController {
     @GetMapping(value = "/sysLog")
     public ESPageResult<JsonNode> getPage(SearchDto searchDto) throws IOException {
         searchDto.setIsHighlighter(true);
-        searchDto.setSortCol("timestamp");
+        searchDto.setSortCol("@timestamp");
         return queryService.strQuery("sys-log-*", searchDto);
     }
 }

@@ -172,6 +172,24 @@
 		<!-- 基础用户管理功能 end-->
 	</dependencies>
 
+	<!--org.geotools 俩个包下载不下来 start -->
+	<repositories>
+		<repository>
+			<id>osgeo</id>
+			<name>OSGeo Release Repository</name>
+			<url>https://repo.osgeo.org/repository/release/</url>
+			<snapshots><enabled>false</enabled></snapshots>
+			<releases><enabled>true</enabled></releases>
+		</repository>
+		<repository>
+			<id>osgeo-snapshot</id>
+			<name>OSGeo Snapshot Repository</name>
+			<url>https://repo.osgeo.org/repository/snapshot/</url>
+			<snapshots><enabled>true</enabled></snapshots>
+			<releases><enabled>false</enabled></releases>
+		</repository>
+	</repositories>
+	<!--org.geotools 俩个包下载不下来 end -->
 	<build>
 		<finalName>service_template2</finalName>
 		<plugins>
