@@ -6,11 +6,9 @@ import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.modules.sample.service.SampleService;
 
-import com.cennavi.search.common.JsonUtil;
 import com.cennavi.utils.ExcelUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FileUtils;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,17 +44,17 @@ public class SampleController extends ResponseUtils {
         return success(list);
     }
 
-    @ApiOperation(value = "查询模板样例_测试json(返回bean,使用bean中的注释)")
+/*    @ApiOperation(value = "查询模板样例_测试json(返回bean,使用bean中的注释)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "name", value = "姓名", required = true)
     })
     @PostMapping("/listSampleByNameJson")
     public String listSampleByNameJson(@RequestParam(value = "name") String name) {
-        /*List<Map<String, Object>> list = sampleService.listByName(name);
-        List<SampleBean> json = toBean(list, SampleBean.class);*/
+        *//*List<Map<String, Object>> list = sampleService.listByName(name);
+        List<SampleBean> json = toBean(list, SampleBean.class);*//*
         List<SampleBean> list = sampleService.listByName(name);
         return JsonUtil.toJSONString(success(list));
-    }
+    }*/
 
     @ApiOperation(value = "查询模板样例1_(返回map,需要单独写返回说明放在notes中)",
             notes = "返回值说明：{code:code, name:名称, age:年龄}")
