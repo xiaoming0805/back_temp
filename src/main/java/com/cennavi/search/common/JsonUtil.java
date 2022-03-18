@@ -54,7 +54,10 @@ public class JsonUtil {
      * @param o 要转换的对象
      */
     public static String toJSONString(Object o) {
-        return toJSONString(o, false);
+        String json = toJSONString(o, false);
+        json = json.replace("\\\"","\"").replace("\"{","{").replace("}\"","}").
+                replace("\"[","[").replace("]\"","]");
+        return json;
     }
 
     /**
