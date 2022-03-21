@@ -120,7 +120,7 @@
         <appender-ref ref="fileDebugLog"/>
         <appender-ref ref="consoleLog"/>
     </logger>
-    <root level="DEBUG">
+    <root level="INFO">
         <!-- 输出到控制台 -->
         <appender-ref ref="consoleLog"/>
         <!-- INFO日志，输出到文件 -->

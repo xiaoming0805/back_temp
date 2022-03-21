@@ -30,9 +30,9 @@ public class SysUserDaoImpl extends BaseDaoImpl<SysUser> implements SysUserDao {
 
     public SysUser getUser(String username,String password) {
         List<Object> params = new ArrayList<>();
-        String sql="select * from sys_user where username=? and password=?";
+        String sql="select * from sys_user where username=? ";
         params.add(username);
-        params.add(password);
+       // params.add(password);
         List<SysUser> list=jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(SysUser .class), params.toArray());
         if(list.size()==1){
             return list.get(0);

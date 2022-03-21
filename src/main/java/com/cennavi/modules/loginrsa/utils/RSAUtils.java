@@ -38,6 +38,7 @@ public class RSAUtils {
 
     private static  String PRIVATE_KEY="";
 
+    private static  String PUBLIC_KEY="";
     static {
         Resource resource = new ClassPathResource("ppencry.enc");
         BufferedReader br;
@@ -49,6 +50,21 @@ public class RSAUtils {
             }
             if(br != null){
                 br.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Resource resource_p = new ClassPathResource("publickey.enc");
+        BufferedReader br_p;
+        try {
+            br_p = new BufferedReader(new InputStreamReader(resource_p.getInputStream()));
+            String line = "";
+            while ((line = br_p.readLine()) != null) {
+                PUBLIC_KEY = line;
+            }
+            if(br_p != null){
+                br_p.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -173,6 +189,27 @@ public class RSAUtils {
             //通过X509编码的Key指令获得公钥对象
             KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.decodeBase64(publicKey));
+            RSAPublicKey key = (RSAPublicKey) keyFactory.generatePublic(x509KeySpec);
+            Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            //return Base64.encode(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes(CHARSET), key.getModulus().bitLength()));
+            return Base64.encodeBase64String(rsaSplitCodec(cipher, Cipher.ENCRYPT_MODE, data.getBytes("UTF-8"), key.getModulus().bitLength()));
+        } catch (Exception e) {
+            throw new RuntimeException("加密字符串[" + data + "]时遇到异常", e);
+        }
+    }
+    /**
+     * 公钥加密
+     *
+     * @param data
+     * @param
+     * @return
+     */
+    public static String publicEncrypt(String data) {
+        try {
+            //通过X509编码的Key指令获得公钥对象
+            KeyFactory keyFactory = KeyFactory.getInstance(RSA_ALGORITHM);
+            X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(Base64.decodeBase64(PUBLIC_KEY));
             RSAPublicKey key = (RSAPublicKey) keyFactory.generatePublic(x509KeySpec);
             Cipher cipher = Cipher.getInstance(RSA_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -314,11 +351,11 @@ public class RSAUtils {
 //        System.out.println(keys.get("privateKey"));
         String publicKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC7qdEg98tYYRtSkOk9AxEETZIKksEPoc9pPy0SWYP3hFJL2LwNNLH+mX+8dbCFtedH09gMw3gLDuwQePrQU59070rMmGK7nkarOYjTZF2IYdHK4hQRMlEQQIrUK6MQCZrlXbi5SNA5cmxidhPmduT2QFsrfdbmtKjPvXa/1lku8wIDAQAB";
         String privateKey="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALup0SD3y1hhG1KQ6T0DEQRNkgqSwQ+hz2k/LRJZg/eEUkvYvA00sf6Zf7x1sIW150fT2AzDeAsO7BB4+tBTn3TvSsyYYrueRqs5iNNkXYhh0criFBEyURBAitQroxAJmuVduLlI0DlybGJ2E+Z25PZAWyt91ua0qM+9dr/WWS7zAgMBAAECgYAArbuI3/yHREqiAM4nH1S3bERj72XtVYt3ePgDwfkdMwhNJ+p+LbubDRkOKGrMAP1mIBj+6tILUDGAWb+mczb3ZrN0TRzxwb4uxz3N4bgx7IFvix77Otm7d5Zd+b59DhYew5fSRZVB5ys09GpqO0+vDcvms+r6zmKCHA6USfOQ6QJBAOnGaeNzCm0w6fbdIaYNXyd5HOIHmS+q3SupOo71/7Tvhgt1kNuSkqQkRaSpWY5aruhM3qfmBs9V722nWxPy6c8CQQDNgSSGOUjA0A+nk8wukVs9MtIf4wsYSx9LEZl97hdFW5n10M5V/FEDF18dtXaFQYNQiw92JhnUyBShKKyOtUWdAkApa7p/Tnbeefg6gVvg7CWb/N2dPvNpesDNZ6K0ienQyU/a3+3WudW5t6OPVWJE0tSC3HvnC97RBczyhOCiXDwJAkAl0deD8DTobyICaBvSkiOlbp3nCmS3UtPuf82stE2KESKTb5sZjfbmx71UfVnTikv9Xao5xydH1o6dXhvro4atAkEAzy5UDqxZ6Y57N6WqwY09FHaTvpwdNZ40dROqGzfdOd+8OwBMYsGFMzX2gIILybsGLCyO1hlcT0Dd/qL/L4omug==";
-        String data="lhl";
+        String data="123456";
 //        String encrypt = publicEncrypt(data, publicKey);//公钥加密数据
         String encrypt = "R8wyGgmQjsL/uhVsOyEH82PyV6y371Rd8nK9gNY0Zm8tfqxAYPcPZsco8O+ypWl9ym9rB20DmkNuVr7FB/tyIaCYca+dwyEbcDxChoOlSnaIXjXy3kfFrbCvXCdWLyMNtlHpfRwsnj6iAP8WG15Ctn/LTyLGJuRDU95/IT/jdyM=";
 //        System.out.println(encrypt);
-        System.out.println(publicEncrypt(data,publicKey));
+        System.out.println("jm==="+publicEncrypt(data,publicKey));
 
         System.out.println(privateDecrypt(publicEncrypt(data,publicKey)));//privateDecrypt私钥解密数据
         System.out.println(privateDecrypt("TI3zSbE1Ub7LVbHHP+/YzviApltX67kHA3HCgjBLHCz7jbvEX3CU3M83zx0+J8oo8arzP2BPi2xTEgNxU5vyujYqI8goO9jI2Z/9Httws4JysnoXBTcwBRuw4bXAnpxQTPN/+GrXClycNcRDe36755JRxOCNQdRNsr6+7W7ALC4="));

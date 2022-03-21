@@ -29,9 +29,8 @@ public class LoginDaoImpl extends BaseDaoImpl<Object> implements LoginDao {
     @Override
     public List<Map<String, Object>> getUser(String username, String password) {
         List<String> params = new ArrayList<>();
-        String sql = "select * from sys_user where username=? and password=?";
+        String sql = "select * from sys_user where username=? ";
         params.add(username);
-        params.add(password);
         return jdbcTemplate.queryForList(sql,params.toArray());
     }
 }

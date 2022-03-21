@@ -52,10 +52,16 @@ public class SysUserServiceImpl  implements ISysUserService {
     private WebPage webPage;
     @Override
     public SysUser getLoginAppUser(String username,String password) {
-        SysUser user=sysUserDao.getUser(username,RSAUtils.privateEncrypt(password));
+        SysUser user=sysUserDao.getUser(username,RSAUtils.publicEncrypt(password));
+
         if(user==null){
             throw new GlobalException(500,"用户名或密码错误！");
         }
+        String od_pwd = RSAUtils.privateDecrypt(user.getPassword());//将密码进行解密
+        if(!password.equals(od_pwd)){
+            throw new GlobalException(500,"用户名或密码错误！");
+        }
+
         //获取 角色
         List<SysRole> roles=sysUserRoleDao.findRolesByUserId(user.getId());
         user.setRoles(roles);
@@ -199,14 +205,14 @@ public class SysUserServiceImpl  implements ISysUserService {
     public void updatePassword(String id, String oldPassword, String newPassword) {
         SysUser sysUser = sysUserDao.selectById(id);
         if (StringUtils.isNotBlank(oldPassword)) {
-            if (!sysUser.getPassword().equals(RSAUtils.privateEncrypt(oldPassword))) {
+            if (!sysUser.getPassword().equals(RSAUtils.publicEncrypt(oldPassword))) {
                 throw new GlobalException(500,"旧密码错误");
             }
         }
         if (StringUtils.isBlank(newPassword)) {
-            newPassword = RSAUtils.privateEncrypt(DEF_USER_PASSWORD);
+            newPassword = RSAUtils.publicEncrypt(DEF_USER_PASSWORD);
         }else{
-            newPassword = RSAUtils.privateEncrypt(newPassword);
+            newPassword = RSAUtils.publicEncrypt(newPassword);
         }
 
         SysUser user = new SysUser();
@@ -258,7 +264,7 @@ public class SysUserServiceImpl  implements ISysUserService {
                 if (StringUtils.isBlank(sysUser.getType())) {
                     sysUser.setType(BACKEND);
                 }
-                sysUser.setPassword(RSAUtils.privateEncrypt(DEF_USER_PASSWORD));
+                sysUser.setPassword(RSAUtils.publicEncrypt(DEF_USER_PASSWORD));
                 sysUser.setEnabled(1);
                 sysUser.setId(UUID.randomUUID().toString().replaceAll("-",""));
                 sysUser.setCreate_time(dateStr);
