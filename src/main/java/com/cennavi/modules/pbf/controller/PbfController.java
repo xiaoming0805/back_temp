@@ -28,7 +28,7 @@ public class PbfController {
      * @return
      */
     @ApiOperation(value = "获取pbf格式的设备列表", notes = "{'source-layer':'deviceData'}")
-    @PostMapping(value = "/listDevicePbf/{z}/{x}/{y}")
+    @GetMapping(value = "/listDevicePbf/{z}/{x}/{y}")
     public byte[] listDevicePbf(@PathVariable("z") int z, @PathVariable("x") int x, @PathVariable("y") int y ){
         byte[] bytes = new byte[0];
         try {

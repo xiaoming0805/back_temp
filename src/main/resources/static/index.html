@@ -5,6 +5,12 @@
     <title>基础数据导入页面</title>
 </head>
 <body>
+
+<form name="Form1" action="./sample/importExcel" method="post"  enctype="multipart/form-data">
+    <h3>导入样例</h3>
+    <input type="file" name="file">
+    <input type="submit" value="upload"/>
+</form>
     <h1>基础数据表导入!</h1>
     
     <form name="Form1" action="./baseImport/importArea" method="post"  enctype="multipart/form-data">

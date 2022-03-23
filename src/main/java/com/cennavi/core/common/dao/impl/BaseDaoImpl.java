@@ -665,11 +665,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                 if(name.contains("'")) {
                     value = value+"'";
                 } else if(name.contains("in")){
-                    value = "('"+ value.replace(",","','")+"')";
+                    value = " ('"+ value.replace(",","','")+"')";
                 } else if(name.contains("like")){
-                    value = "'"+value+"%'";
+                    value = " '"+value+"%'";
                 }
-                sql.append(name).append(value).append(" AND "); // 没有考虑or的情况
+                sql.append(name).append(value).append(" and "); // 没有考虑or的情况
             }
             int endIndex = sql.lastIndexOf("and");
             if (endIndex > 0) {
@@ -753,7 +753,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
         System.out.println("SQL=" + sql);
         //return jdbcTemplate.queryForInt(sql.toString());
-        return jdbcTemplate.queryForObject(sql.toString(), null, Integer.class);
+        return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
     }
 
     //根据类获取表名，查询类注解

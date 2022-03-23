@@ -40,7 +40,8 @@ public class SwaggerConfig {
         ParameterBuilder parameterBuilder = new ParameterBuilder();
         List<Parameter> parameters = Lists.newArrayList();
         parameterBuilder.name("token").description("token令牌").modelRef(new ModelRef("String"))
-                .parameterType("header")
+                //.parameterType("header")
+                .parameterType("query")
                 .required(false).build();
         parameters.add(parameterBuilder.build());
         // 添加全局响应状态码

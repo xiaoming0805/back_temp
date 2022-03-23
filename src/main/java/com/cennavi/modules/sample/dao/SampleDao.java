@@ -21,4 +21,6 @@ public interface SampleDao extends BaseDao<SampleBean> {
     List<Map<String,Object>> listByName1(String name);
 
     List<Map<String,Object>> listCensus();
+
+    List<Map<String,Object>> findByExport();
 }

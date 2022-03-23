@@ -20,7 +20,9 @@ public class WebContextFilter implements Filter {
 
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Authentication");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
+        //httpServletResponse.setHeader("Access-Control-Allow-Headers", "Authentication");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
         filterChain.doFilter(servletRequest, httpServletResponse);
     }

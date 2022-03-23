@@ -49,4 +49,10 @@ public class SampleDaoImpl extends BaseDaoImpl<SampleBean> implements SampleDao 
         String sql="select id as myid,name as myname from sample";
         return jdbcTemplate.queryForList(sql);
     }
+
+    @Override
+    public List<Map<String, Object>> findByExport() {
+        String sql = "select name,code from sample";
+        return jdbcTemplate.queryForList(sql);
+    }
 }

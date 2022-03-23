@@ -8,16 +8,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 样例service
  * Created by sunpengyan on 2021/1/5.
  */
 @Service
-public class SampleServiceImpl implements SampleService {
+public class SampleServiceImpl  implements SampleService {
 
     @Autowired
     private SampleDao sampleDao;
@@ -52,7 +50,7 @@ public class SampleServiceImpl implements SampleService {
     public PageResult<SampleBean> findByPage(String name, int pageNo, int pageSize) {
         Map<String, String> where = new HashMap<>();
         if(StringUtils.isNotBlank(name)) {
-            where.put("name like", name);
+            where.put(" name like", name);
         }
         return sampleDao.findByPage(pageNo, pageSize, where);
     }
@@ -67,6 +65,11 @@ public class SampleServiceImpl implements SampleService {
     }
 
     @Override
+    public List<Map<String, Object>> findByExport() {
+        return sampleDao.findByExport();
+    }
+
+    @Override
     public List<Map<String,Object>> listCensus() {
         return sampleDao.listCensus();
     }
@@ -74,5 +77,24 @@ public class SampleServiceImpl implements SampleService {
     @Override
     public void save(String name, Integer age, String code) {
 
+    }
+
+    @Override
+    public void batchSave(List<SampleBean> list) {
+        sampleDao.batchSave(list);
+    }
+
+    @Override
+    public void batchSaveByStr(List<String> datas) {
+        List<SampleBean> list = new ArrayList<>();
+        for (String s : datas) {
+            String[] ss = s.split(",");
+            SampleBean sb = new SampleBean();
+            sb.setId(UUID.randomUUID().toString());
+            sb.setName(ss[0]);
+            sb.setCode(ss[1]);
+            list.add(sb);
+        }
+        sampleDao.batchSave(list);
     }
 }

@@ -128,27 +128,27 @@ public class SampleController extends ResponseUtils {
 
 
     @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
-    @ApiOperation(value = "导入t_area文本数据样例")
-    @PostMapping("/importArea")
+    @ApiOperation(value = "导入simple文本数据样例",notes = "名称,code")
+    @PostMapping("/import")
     public ResultObj importArea(@RequestParam(value = "file") MultipartFile file) throws IOException {
         InputStream in = file.getInputStream();
         InputStreamReader read = new InputStreamReader(in, "utf-8");
         BufferedReader bufferedReader = new BufferedReader(read);
 
-        //List<BaseArea> areas = new ArrayList<>();
+        List<SampleBean> list = new ArrayList<>();
         String lineTxt = "";
         while ((lineTxt = bufferedReader.readLine()) != null) {
             if (lineTxt.toLowerCase().contains("area_id")) {
                 continue;
             }
-            String[] ss = lineTxt.replace("\"", "").split("\t");
-            /*BaseArea ba = new BaseArea();
-            ba.setId(ss[0]);
-            ba.setType(ss[1]);
-            ba.setName(ss[2]);
-            areas.add(ba);*/
+            String[] ss = lineTxt.split(",");
+            SampleBean sb = new SampleBean();
+            sb.setId(UUID.randomUUID().toString());
+            sb.setName(ss[0]);
+            sb.setCode(ss[1]);
+            list.add(sb);
         }
-        //sampleService.batchSaveArea(areas);
+        sampleService.batchSave(list);
         return success();
     }
 
@@ -160,43 +160,42 @@ public class SampleController extends ResponseUtils {
         InputStream in = file.getInputStream();
         //解析excel中的数据
         List<String> datas = ExcelUtil.importLayerDataFromExcel(in, filename);
+        sampleService.batchSaveByStr(datas);
         return success();
     }
 
-    @ApiImplicitParam(name = "file", value = "文件", dataType = "file", required = true)
+
     @ApiOperation(value = "导出excel样例")
-    @PostMapping("/exportExcel")
+    //@PostMapping("/exportExcel")
+    @GetMapping("/exportExcel")
     public void exportExcel(HttpServletResponse response) throws IOException {
         //设备属性
-        String ss = "用户名(必填),密码(必填),真实名称(必填),所属组织id(必填),角色名称(必填),联系电话,用户状态,描述";
+        String ss = "名称,code";
         String[] headers = ss.split(",");
 
         //查询要导出的数据
-        List<Map<String,Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list = sampleService.findByExport();
 
         response.reset();
         response.setContentType("application/excel");
         response.setHeader("content-disposition", "attachment; filename=userinfo.xls");
+        response.setHeader("Access-Control-Allow-Origin","*");
         ExcelUtil.exportMapInfoToExcel(list, headers,"userinfo",response.getOutputStream());
     }
-
     /**
      * 下载用户导入模板
      */
-
-
-
-    @ApiOperation(value = "文件下载样例")
-    @PostMapping("downloadFile")
-    public ResponseEntity<byte[]> downloadReport(@RequestParam(value = "filename") String filename) throws IOException {
-        String path = "e://";
-        //String filename = "t.txt";
-        File file = new File(path+filename);
-        HttpHeaders headers = new HttpHeaders();
-        String downloadFileName = new String(filename.getBytes("UTF-8"), "ISO-8859-1");  //少了这句，可能导致下载中文文件名的文档，只有后缀名的情况
-        headers.setContentDispositionFormData("attachment", downloadFileName);//告知浏览器以下载方式打开
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);//设置MIME类型
-        return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
-    }
+//    @ApiOperation(value = "文件下载样例")
+//    @PostMapping("downloadFile")
+//    public ResponseEntity<byte[]> downloadReport(@RequestParam(value = "filename") String filename) throws IOException {
+//        String path = "e://";
+//        //String filename = "t.txt";
+//        File file = new File(path+filename);
+//        HttpHeaders headers = new HttpHeaders();
+//        String downloadFileName = new String(filename.getBytes("UTF-8"), "ISO-8859-1");  //少了这句，可能导致下载中文文件名的文档，只有后缀名的情况
+//        headers.setContentDispositionFormData("attachment", downloadFileName);//告知浏览器以下载方式打开
+//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);//设置MIME类型
+//        return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+//    }
 
 }

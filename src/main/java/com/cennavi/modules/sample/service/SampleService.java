@@ -57,6 +57,7 @@ public interface SampleService {
      */
     List<SampleBean> findAll();
 
+    List<Map<String,Object>> findByExport();
     /**
      * 查询所有
      * @return
@@ -70,4 +71,9 @@ public interface SampleService {
      * @param code
      */
     void save(String name,Integer age,String code);
+
+    void batchSave(List<SampleBean> list);
+
+    void batchSaveByStr(List<String> datas);
 }
+
