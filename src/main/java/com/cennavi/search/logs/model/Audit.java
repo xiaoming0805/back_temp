@@ -3,8 +3,6 @@ package com.cennavi.search.logs.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 /**
  * 审计日志
  *

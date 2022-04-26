@@ -2,7 +2,6 @@ package com.cennavi.search.client.client.feign.fallback;
 
 import com.cennavi.search.client.client.feign.SearchService;
 import com.cennavi.search.common.ESPageResult;
-import com.cennavi.system.common.WebPageResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;

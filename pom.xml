@@ -127,6 +127,12 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.12</version>
 		</dependency>
+		<!-- http/https tool /  HttpTool 工具类 -->
+		<dependency>
+			<groupId>com.ning</groupId>
+			<artifactId>async-http-client</artifactId>
+			<version>1.8.13</version>
+		</dependency>
 		<!-- 基础用户管理功能依赖 start -->
 		<dependency>
 			<groupId>com.github.whvcse</groupId>

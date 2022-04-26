@@ -1,14 +1,8 @@
 package com.cennavi.modules.inoutflow.dao.impl;
 
-import com.cennavi.modules.inoutflow.dao.InoutFlowDao;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.dao.SampleDao;
 import com.cennavi.core.common.dao.impl.BaseDaoImpl;
-import com.cennavi.modules.track.beans.Track;
-import com.cennavi.modules.track.dao.TrackDao;
-import org.apache.commons.lang.StringUtils;
+import com.cennavi.modules.inoutflow.dao.InoutFlowDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,7 +15,7 @@ import java.util.Map;
 /**
  */
 @Repository
-public class InoutFlowDaoImpl extends BaseDaoImpl<SampleBean> implements InoutFlowDao {
+public class InoutFlowDaoImpl extends BaseDaoImpl<Object> implements InoutFlowDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

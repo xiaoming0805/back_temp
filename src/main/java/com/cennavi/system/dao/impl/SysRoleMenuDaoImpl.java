@@ -1,12 +1,9 @@
 package com.cennavi.system.dao.impl;
 
 import com.cennavi.core.common.dao.impl.BaseDaoImpl;
-import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.system.bean.SysMenu;
 import com.cennavi.system.bean.SysRoleMenu;
-import com.cennavi.system.bean.SysRoleUser;
 import com.cennavi.system.dao.SysRoleMenuDao;
-import com.cennavi.system.dao.SysUserRoleDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 

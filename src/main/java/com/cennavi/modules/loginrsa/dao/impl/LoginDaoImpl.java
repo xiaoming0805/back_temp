@@ -1,14 +1,8 @@
 package com.cennavi.modules.loginrsa.dao.impl;
 
 import com.cennavi.modules.loginrsa.dao.LoginDao;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.dao.SampleDao;
 import com.cennavi.core.common.dao.impl.BaseDaoImpl;
-import com.cennavi.modules.track.beans.Track;
-import com.cennavi.modules.track.dao.TrackDao;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

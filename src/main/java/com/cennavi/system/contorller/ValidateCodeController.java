@@ -3,21 +3,17 @@ package com.cennavi.system.contorller;
 
 import com.cennavi.core.common.ResponseUtils;
 import com.cennavi.core.common.ResultObj;
-import com.cennavi.modules.sample.beans.SampleBean;
 import com.cennavi.system.bean.SysUser;
 import com.cennavi.system.common.TokenCache;
 import com.cennavi.system.service.ISysUserService;
-import com.cennavi.utils.DateUtils;
 import com.cennavi.utils.RedisUtil;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.base.Captcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import sun.java2d.pipe.AAShapePipe;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;

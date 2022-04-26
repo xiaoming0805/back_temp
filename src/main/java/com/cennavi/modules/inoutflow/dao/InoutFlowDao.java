@@ -1,8 +1,6 @@
 package com.cennavi.modules.inoutflow.dao;
 
 import com.cennavi.core.common.dao.BaseDao;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.track.beans.Track;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +8,7 @@ import java.util.Map;
 /**
  * 样例dao
  */
-public interface InoutFlowDao extends BaseDao<SampleBean> {
+public interface InoutFlowDao extends BaseDao<Object> {
 
     /**
      * 生成并保存区域od,通过sql

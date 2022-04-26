@@ -1,6 +1,5 @@
 package com.cennavi.search.common;
 
-import com.cennavi.system.common.WebPageResult;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

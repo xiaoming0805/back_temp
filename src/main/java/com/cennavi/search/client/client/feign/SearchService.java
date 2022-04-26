@@ -3,7 +3,7 @@ package com.cennavi.search.client.client.feign;
 import com.cennavi.search.client.client.feign.fallback.SearchServiceFallbackFactory;
 import com.cennavi.search.client.model.SearchDto;
 import com.cennavi.search.common.ESPageResult;
-import com.cennavi.system.common.ServiceNameConstants;
+import com.cennavi.search.common.ServiceNameConstants;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -3,7 +3,6 @@ package com.cennavi.system.service.impl;
 
 import com.cennavi.core.exception.GlobalException;
 import com.cennavi.modules.loginrsa.utils.RSAUtils;
-import com.cennavi.modules.sample.dao.SampleDao;
 import com.cennavi.system.bean.SysMenu;
 import com.cennavi.system.bean.SysRole;
 import com.cennavi.system.bean.SysRoleUser;
@@ -16,20 +15,15 @@ import com.cennavi.system.dao.SysUserRoleDao;
 import com.cennavi.system.service.ISysUserService;
 
 import com.cennavi.utils.DateUtils;
-import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.DigestUtils;
 
-import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
 
