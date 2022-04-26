@@ -1,7 +1,7 @@
 package com.cennavi.search.client.client.feign;
 
 import com.cennavi.search.client.client.feign.fallback.SearchServiceFallbackFactory;
-import com.cennavi.system.common.ServiceNameConstants;
+import com.cennavi.search.common.ServiceNameConstants;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

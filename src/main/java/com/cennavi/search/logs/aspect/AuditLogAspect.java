@@ -1,11 +1,11 @@
 package com.cennavi.search.logs.aspect;
 
 
+import com.cennavi.search.common.AuditLog;
+import com.cennavi.search.common.TokenCache;
 import com.cennavi.search.logs.model.Audit;
 import com.cennavi.search.logs.properties.AuditLogProperties;
 import com.cennavi.search.logs.service.IAuditService;
-import com.cennavi.system.common.AuditLog;
-import com.cennavi.system.common.TokenCache;
 import com.cennavi.utils.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
@@ -26,7 +26,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**

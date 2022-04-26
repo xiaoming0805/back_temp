@@ -1,19 +1,15 @@
 package com.cennavi.search.client.client.service.impl;
 
-import com.cennavi.search.client.client.feign.AggregationService;
-import com.cennavi.search.client.client.feign.SearchService;
 import com.cennavi.search.client.client.service.IQueryService;
 import com.cennavi.search.client.model.LogicDelDto;
 import com.cennavi.search.client.model.SearchDto;
 import com.cennavi.search.common.ESPageResult;
 import com.cennavi.search.server.service.IAggregationService;
 import com.cennavi.search.server.service.ISearchService;
-import com.cennavi.system.common.WebPageResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Map;
 
