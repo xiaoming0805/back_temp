@@ -3,9 +3,6 @@ package com.cennavi.modules.loginrsa.controller;
 import com.cennavi.core.common.ResponseUtils;
 import com.cennavi.core.common.ResultObj;
 import com.cennavi.modules.loginrsa.service.LoginService;
-import com.cennavi.modules.track.beans.Track;
-import com.cennavi.modules.track.service.TrackService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -14,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = {"用户登录RSA非对称加密"},value = "login")
 @RestController

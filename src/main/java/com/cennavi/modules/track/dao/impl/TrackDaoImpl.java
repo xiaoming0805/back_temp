@@ -1,11 +1,8 @@
 package com.cennavi.modules.track.dao.impl;
 
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.dao.SampleDao;
 import com.cennavi.core.common.dao.impl.BaseDaoImpl;
 import com.cennavi.modules.track.beans.Track;
 import com.cennavi.modules.track.dao.TrackDao;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,13 +10,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by sunpengyan on 2021/1/5.
  */
 @Repository
-public class TrackDaoImpl extends BaseDaoImpl<SampleBean> implements TrackDao {
+public class TrackDaoImpl extends BaseDaoImpl<Track> implements TrackDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

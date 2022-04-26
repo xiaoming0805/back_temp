@@ -1,9 +1,5 @@
 package com.cennavi.modules.track.service.impl;
 
-import com.cennavi.core.common.PageResult;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.dao.SampleDao;
-import com.cennavi.modules.sample.service.SampleService;
 import com.cennavi.modules.track.beans.Track;
 import com.cennavi.modules.track.dao.TrackDao;
 import com.cennavi.modules.track.service.TrackService;
@@ -16,15 +12,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 样例service

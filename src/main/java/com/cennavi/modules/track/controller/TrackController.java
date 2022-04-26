@@ -2,9 +2,6 @@ package com.cennavi.modules.track.controller;
 
 import com.cennavi.core.common.ResponseUtils;
 import com.cennavi.core.common.ResultObj;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.beans.vo.ListCensusVO;
-import com.cennavi.modules.sample.service.SampleService;
 import com.cennavi.modules.track.beans.Track;
 import com.cennavi.modules.track.service.TrackService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Api(tags = {"轨迹优化"},value = "track")
 @RestController

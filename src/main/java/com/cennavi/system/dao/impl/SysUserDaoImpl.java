@@ -1,10 +1,6 @@
 package com.cennavi.system.dao.impl;
 
 import com.cennavi.core.common.dao.impl.BaseDaoImpl;
-import com.cennavi.modules.sample.beans.SampleBean;
-import com.cennavi.modules.sample.dao.SampleDao;
-import com.cennavi.system.bean.SysMenu;
-import com.cennavi.system.bean.SysRole;
 import com.cennavi.system.bean.SysUser;
 import com.cennavi.system.common.WebPage;
 import com.cennavi.system.common.WebPageResult;
