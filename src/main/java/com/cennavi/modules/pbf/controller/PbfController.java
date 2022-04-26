@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
+ *  需要引入vector-1.0.jar
  * Created by sunpengyan on 2022/2/15.
  */
 @Api(tags = "pbf接口")
