@@ -1,9 +1,7 @@
 package com.cennavi.utils;
 
 
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.Response;
-import net.sf.json.JSONObject;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -11,17 +9,18 @@ import java.io.UnsupportedEncodingException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.Response;
 
 /**
  * @author Z。jj
  */
 public class HttpTool {
-	private static final String DEFAULT_CHARSET = "UTF-8";
+    private static final String DEFAULT_CHARSET = "UTF-8";
     /**
      * @return 返回类型:
      * @throws IOException
@@ -104,6 +103,65 @@ public class HttpTool {
         return body;
     }
 
+    /***
+     * post 带 headers
+     * @param url
+     * @param params
+     * @param headers
+     * @return
+     * @throws IOException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static String post(String url, Map<String, String> params, Map<String, String> headers) throws IOException, ExecutionException, InterruptedException {
+        AsyncHttpClient http = new AsyncHttpClient();
+        AsyncHttpClient.BoundRequestBuilder builder = http.preparePost(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
+        if (params != null && !params.isEmpty()) {
+            Set<String> keys = params.keySet();
+            for (String key : keys) {
+                builder.addParameter(key, params.get(key));
+            }
+        }
+        if (headers != null && !headers.isEmpty()) {
+            Set<String> keys = headers.keySet();
+            for (String key : keys) {
+                builder.addHeader(key, headers.get(key));
+            }
+        }
+        Future<Response> f = builder.execute();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
+        http.close();
+        return body;
+    }
+
+    /**
+     * post  body 为 "application/json 形式 获取数据
+     * @param url
+     * @param content  不能用map 用JSONObject toString()
+     * @param headers
+     * @return
+     * @throws IOException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public static String post(String url, String content, Map<String, String> headers) throws IOException, ExecutionException, InterruptedException {
+        AsyncHttpClient http = new AsyncHttpClient();
+        AsyncHttpClient.BoundRequestBuilder builder = http.preparePost(url);
+        builder.setBodyEncoding(DEFAULT_CHARSET);
+        builder.setBody(content);
+        if (headers != null && !headers.isEmpty()) {
+            Set<String> keys = headers.keySet();
+            for (String key : keys) {
+                builder.addHeader(key, headers.get(key));
+            }
+        }
+        Future<Response> f = builder.execute();
+        String body = f.get().getResponseBody(DEFAULT_CHARSET);
+        http.close();
+        return body;
+    }
+
     /**
      * 上传媒体文件
      *
@@ -131,7 +189,7 @@ public class HttpTool {
         return body;
     }
 
-  
+
 
     public static String post(String url, String s) throws IOException, ExecutionException, InterruptedException {
         AsyncHttpClient http = new AsyncHttpClient();
@@ -143,22 +201,12 @@ public class HttpTool {
         http.close();
         return body;
     }
-    
+
     public  static void main(String[] args) throws Exception{
-        //这个工具类 好在处理 https 相关接口 容错更强。 这个工具类 可继续扩展（例如获取访问 sessionid），post带headers
-        //带headers 普通get
-    	String url="http://www.baidu.com";
-    	String json=get(url);
-    	System.out.println(json);
-    	JSONObject obj=JSONObject.fromObject(json);
-    	System.out.println(json);
-        //带headers 例子
-        String url2="https://10.163.201.158/openapi/devicemanagement/v2/app/shadowDevice/get";
-        Map<String, String> params2=new HashMap<>();
-        params2.put("deviceName","123456");
-        Map<String, String> headers =new HashMap<>();
-        headers.put("Authorization","access_token");
-        String rel2= get(url2,params2,headers);
-        JSONObject device=JSONObject.fromObject(rel2);
+//        String url="http://www.baidu.com";
+//        String json=get(url);
+//        System.out.println(json);
+//        JSONObject obj=JSONObject.fromObject(json);
+//        System.out.println(json);
     }
 }
