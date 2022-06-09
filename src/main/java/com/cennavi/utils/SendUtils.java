@@ -115,7 +115,7 @@ public class SendUtils {
         return result;
     }
 
-    public static String sendPost(String url, String param) {
+    public static String sendPost(String url, String param, String... head) {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -129,6 +129,9 @@ public class SendUtils {
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
             //conn.addRequestProperty("Content-type", "application/x-www-form-urlencoded");
+            if(head.length>0) {
+                conn.setRequestProperty("Authorization", head[0]);
+            }
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -172,7 +175,7 @@ public class SendUtils {
         //System.out.println("POST请求结果：" + result);
         return result;
     }
-    public static String sendPostJson(String url, String param) {
+    public static String sendPostJson(String url, String param, String... head) {
         PrintWriter out = null;
         BufferedReader in = null;
         String result = "";
@@ -184,6 +187,9 @@ public class SendUtils {
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setUseCaches(false);
+            if(head.length>0) {
+                conn.setRequestProperty("Authorization", head[0]);
+            }
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Charset", "UTF-8");
             conn.setRequestProperty("Content-Type","application/json; charset=UTF-8");
