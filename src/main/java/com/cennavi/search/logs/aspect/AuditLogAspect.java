@@ -2,7 +2,7 @@ package com.cennavi.search.logs.aspect;
 
 
 import com.cennavi.search.common.AuditLog;
-import com.cennavi.search.common.TokenCache;
+import com.cennavi.search.common.SearchTokenCache;
 import com.cennavi.search.logs.model.Audit;
 import com.cennavi.search.logs.properties.AuditLogProperties;
 import com.cennavi.search.logs.service.IAuditService;
@@ -49,7 +49,7 @@ public class AuditLogAspect {
     @Autowired
     private IAuditService auditService;
     @Autowired
-    private TokenCache tokenCache;
+    private SearchTokenCache tokenCache;
 //    public AuditLogAspect(AuditLogProperties auditLogProperties, IAuditService auditService) {
 //        this.auditLogProperties = auditLogProperties;
 //        this.auditService = auditService;
