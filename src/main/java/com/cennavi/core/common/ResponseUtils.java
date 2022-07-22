@@ -2,6 +2,8 @@ package com.cennavi.core.common;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +132,51 @@ public class ResponseUtils {
      */
     public static Map<String, String> getUserByToken(String token) {
         return null;
+    }
+
+
+    /**
+     * 检查像素(低于某像素)
+     * @return
+     * @throws Exception
+     */
+    public Boolean checkImgPixel(BufferedImage bi, String width, String height) throws Exception{
+        int wid = bi.getWidth(); // 像素
+        int heig = bi.getHeight(); // 像素
+        Integer img_width = Integer.valueOf(width);
+        Integer img_height = Integer.valueOf(height);
+        if (img_height<0) {
+            return wid>img_width  ;
+        }else{
+            return wid>img_width || heig>img_height ;
+        }
+    }
+    /**
+     * 检查像素(等于某像素)
+     * @return
+     * @throws Exception
+     */
+    public Boolean checkImgPixelFinal(BufferedImage bi,String width,String height) throws Exception{
+        int wid = bi.getWidth(); // 像素
+        int heig = bi.getHeight(); // 像素
+
+        System.out.println(wid+"*"+heig);
+        Integer img_width = Integer.valueOf(width);
+        Integer img_height = Integer.valueOf(height);
+        System.out.println(wid==img_width && heig==img_height);
+        return wid==img_width && heig==img_height ;
+    }
+
+    /**
+     * 检查图片大小
+     * @param fileup
+     * @param size
+     * @return
+     * @throws Exception
+     */
+    public boolean checkImgSize(File fileup, String size) throws Exception{
+        Integer img_size = Integer.valueOf(size);
+        long length = fileup.length();
+        return length >= img_size ;
     }
 }
