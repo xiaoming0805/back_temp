@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class TokenCache {
+public class SearchTokenCache {
 
     private final static String TOKEN_PREFIX = "token:%s";
 
