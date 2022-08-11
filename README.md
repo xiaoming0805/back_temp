@@ -60,3 +60,6 @@ http://ip:port/项目名/doc.html
 
 定时任务管理地址
 http://ip:port/项目名/task.html
+
+管理端地址
+http://ip:port/项目名/web/login.html
