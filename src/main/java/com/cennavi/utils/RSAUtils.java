@@ -1,9 +1,8 @@
-package com.cennavi.modules.loginrsa.utils;
+package com.cennavi.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.Base64Utils;
 
 import javax.crypto.Cipher;
 import java.io.BufferedReader;

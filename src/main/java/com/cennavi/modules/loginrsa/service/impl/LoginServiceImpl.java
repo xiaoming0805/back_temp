@@ -2,7 +2,7 @@ package com.cennavi.modules.loginrsa.service.impl;
 
 import com.cennavi.modules.loginrsa.dao.LoginDao;
 import com.cennavi.modules.loginrsa.service.LoginService;
-import com.cennavi.modules.loginrsa.utils.RSAUtils;
+import com.cennavi.utils.RSAUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,6 @@ package com.cennavi.system.service.impl;
 
 
 import com.cennavi.core.exception.GlobalException;
-import com.cennavi.modules.loginrsa.utils.RSAUtils;
 import com.cennavi.system.bean.SysMenu;
 import com.cennavi.system.bean.SysRole;
 import com.cennavi.system.bean.SysRoleUser;
@@ -15,6 +14,7 @@ import com.cennavi.system.dao.SysUserRoleDao;
 import com.cennavi.system.service.ISysUserService;
 
 import com.cennavi.utils.DateUtils;
+import com.cennavi.utils.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.collections.MapUtils;
@@ -46,7 +46,7 @@ public class SysUserServiceImpl  implements ISysUserService {
     private WebPage webPage;
     @Override
     public SysUser getLoginAppUser(String username,String password) {
-        SysUser user=sysUserDao.getUser(username,RSAUtils.publicEncrypt(password));
+        SysUser user=sysUserDao.getUser(username, RSAUtils.publicEncrypt(password));
 
         if(user==null){
             throw new GlobalException(500,"用户名或密码错误！");
