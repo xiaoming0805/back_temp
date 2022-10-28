@@ -19,6 +19,7 @@ import java.util.Map;
 /**
  * Excel导入导出工具类
  * Created by sunpengyan on 2017/9/12.
+ * updated by sunpengyan on 2022/10/28. 修复导出map数据顺序混乱的情况
  <dependency>
  <groupId>org.apache.poi</groupId>
  <artifactId>poi-ooxml</artifactId>

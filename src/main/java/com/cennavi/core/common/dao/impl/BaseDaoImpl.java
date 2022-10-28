@@ -22,6 +22,7 @@ import java.util.*;
 
 /**
  * Created by sunpengyan on 2017/5/15.
+ * Updated by sunpengyan on 2022/3/23. 增加batchDelete
  */
 public class BaseDaoImpl<T> implements BaseDao<T> {
 
