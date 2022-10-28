@@ -251,11 +251,16 @@ public class ExcelUtil {
             Map<String, Object> map = list.get(i);
             try {
                 int j = 0;
-                for (String key : map.keySet()) {
+                for (String header : headers) {
+                    cell = row.createCell(j);
+                    cell.setCellValue(map.get(header) == null ? "null" : map.get(header).toString());
+                    j++;
+                }
+                /*for (String key : map.keySet()) {
                     cell = row.createCell(j);
                     cell.setCellValue(map.get(key) == null ? "null" : map.get(key).toString());
                     j++;
-                }
+                }*/
             } catch (Exception e) {
                 logger.info(e.getMessage(), e);
             }
