@@ -23,6 +23,7 @@ import java.util.*;
 /**
  * Created by sunpengyan on 2017/5/15.
  * Updated by sunpengyan on 2022/3/23. 增加batchDelete
+ * Updated by sunpengyan on 2022/11/4. 修改update\batchUpdate 增加自定义主键问题
  */
 public class BaseDaoImpl<T> implements BaseDao<T> {
 
@@ -74,6 +75,13 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         Object[] args = this.setArgs(entity, SQL_UPDATE ,null);
         //int[] argTypes = this.setArgTypes(entity, SQL_UPDATE, null);
         //jdbcTemplate.update(sql, args, argTypes);
+        jdbcTemplate.update(sql, args);
+    }
+
+    @Override
+    public void update(T entity, String key) {
+        String sql = this.makeSql(SQL_UPDATE, key);
+        Object[] args = this.setArgs(entity, SQL_UPDATE ,null);
         jdbcTemplate.update(sql, args);
     }
 
@@ -156,35 +164,6 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     public void batchSave(final List<T> list) {
         String sql = this.makeSql(SQL_INSERT);
         batchUpdate(list, sql);
-        /*int[] ints = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            public int getBatchSize() {
-                return list.size();
-            }
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                T t = list.get(i);
-                Field[] fields = t.getClass().getDeclaredFields();
-                try {
-                    for (int j = 0; j < fields.length; j++) {
-                        boolean isColumn = fields[j].isAnnotationPresent(IgnoreColumn.class);//判断是否有自定义注解,如果有则忽略
-                        if(isColumn){
-                            continue;
-                        }
-                        fields[j].setAccessible(true); // 暴力反射
-                        Object obj = fields[j].get(t);
-                        if (obj!=null && obj.getClass().getName().equals("java.util.Date")){
-                            Date parse = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US).parse(obj.toString());
-                            ps.setTimestamp(j + 1,  new java.sql.Timestamp(parse.getTime()));
-                        }else {
-                            ps.setObject(j + 1, obj);
-                        }
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
     }
 
     @Override
@@ -236,11 +215,15 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         });
     }
 
-    /**
-     * 未完成
-     */
     @Override
     public <E> void batchUpdate(List<E> list,Class<E> entity) {
+        batchUpdate(list, entity, "id");
+    }
+    @Override
+    public <E> void batchUpdate(List<E> list, Class<E> entity, String key) {
+        if(list != null || list.size()==0) {
+            return;
+        }
         String table; Field[] fields;
         if(entity==null) {
             table = this.getTableNameByClassName(entityClass);
@@ -252,7 +235,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         StringBuilder sb = new StringBuilder();
         sb.append("update ").append(table).append(" set ");
         List<Object[]> params = new ArrayList<Object[]>();
-        Object primaryKey = "id";
+        String primaryKey = StringUtils.isNotBlank(key) ? key : "id";
         for (E t : list) {
             int index = 0;
             if (fields != null && fields.length > 0) {
@@ -262,7 +245,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                     try {
                         field.setAccessible(true);
                         Object obj = field.get(t);
-                        if (field.getName().equalsIgnoreCase("id")) {
+                        if (field.getName().equalsIgnoreCase(primaryKey)) {
                             //primaryKey = obj;
                             id = obj;
                         } else {
@@ -391,11 +374,14 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
 
     // 组装SQL
     private String makeSql(String sqlFlag) {
-        return makeSql(sqlFlag,null,null);
+        return makeSql(sqlFlag,null,null,null);
+    }
+    private String makeSql(String sqlFlag, String key) {
+        return makeSql(sqlFlag,null,null,key);
     }
 
     // 组装SQL
-    private <E> String makeSql(String sqlFlag,final Class<E> entity,String table) {
+    private <E> String makeSql(String sqlFlag,final Class<E> entity,String table, String... key) {
         StringBuffer sql = new StringBuffer();
         String tablename = "";
         Field[] fields = null;
@@ -409,6 +395,11 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         if(StringUtils.isNotBlank(table)) {
             tablename = table;
         }
+        String keyName = "id";//主键名称
+        if(key != null && key.length>0 && key[0] != null && key[0] != "null") {
+            keyName = key[0];
+        }
+
         if (sqlFlag.equals(SQL_INSERT)) {
             sql.append(" INSERT INTO " + tablename);
             sql.append("(");
@@ -447,16 +438,15 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
             for (int i = 0; fields != null && i < fields.length; i++) {
                 fields[i].setAccessible(true); // 暴力反射
                 String column = fields[i].getName();
-                if (column.equals("id")) { // id 代表主键
+                if (column.equals(keyName)) { // id 代表主键
                     continue;
                 }
                 boolean isColumn = fields[i].isAnnotationPresent(IgnoreColumn.class);//判断是否有自定义注解(排除bean中的某些字段),
                 if(!isColumn){
                     String tt = "?,";
-                    if(column.equals("geom")) { //处理特殊情况，字符串转geometry对象
+                    /*if(column.equals("geom")) { //处理特殊情况，字符串转geometry对象
                         tt = "st_setsrid(st_geomfromgeojson(?),4326),";
-                    }
-                    //sql.append(column).append("=").append("?,");
+                    }*/
                     if(isHump) {
                         sql.append(camelToUnderline(column)).append("=").append(tt);
                     } else {
@@ -465,9 +455,9 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
                 }
             }
             sql = sql.deleteCharAt(sql.length() - 1);
-            sql.append(" WHERE id=?");
+            sql.append(" WHERE "+keyName+"=?");
         } else if (sqlFlag.equals(SQL_DELETE)) {
-            sql.append(" DELETE FROM " + tablename + " WHERE id=?");
+            sql.append(" DELETE FROM " + tablename + " WHERE "+keyName+"=?");
         }
         return sql.toString();
     }

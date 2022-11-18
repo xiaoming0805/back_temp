@@ -18,6 +18,7 @@ public interface BaseDao<T> {
     <E> void save(final E bean,final Class<E> entityClass);
 
     void update(T entity);
+    void update(T entity, String key);
 
     void delete(T entity);
 
@@ -52,14 +53,14 @@ public interface BaseDao<T> {
      * @param <E>
      */
     <E> void batchSave(final List<E> list, final Class<E> entityClass, String table);
-
     <E> void batchSave(final List<E> list, final Class<E> entityClass);
 
     /**
-     * 未完成
+     * @param list 要保存的记录
+     * @param entry 对象.class
+     * @param key  主键值，默认id
      */
-//    void batchUpdate(List<T> list);
-
+    <E> void batchUpdate(List<E> list, Class<E> entry, String key);
     <E> void batchUpdate(List<E> list, Class<E> entry);
 
     T findById(Serializable id);
