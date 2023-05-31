@@ -176,6 +176,13 @@
 			<version>5.1.4</version>
 		</dependency>
 		<!-- 基础用户管理功能 end-->
+
+		<!--链接 clickhouse 驱动 -->
+		<dependency>
+			<groupId>ru.yandex.clickhouse</groupId>
+			<artifactId>clickhouse-jdbc</artifactId>
+			<version>0.2.4</version>
+		</dependency>
 	</dependencies>
 
 	<!--org.geotools 俩个包下载不下来 start -->
