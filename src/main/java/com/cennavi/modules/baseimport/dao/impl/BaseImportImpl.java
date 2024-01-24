@@ -29,7 +29,7 @@ public class BaseImportImpl extends BaseDaoImpl<Object> implements BaseImportDao
 
     @Override
     public void updateRticTableGeom() {
-        String sql = "update base_rtic set center_geom=st_geomfromgeojson(center),geom=st_geomfromgeojson(geometry)";
+        String sql = "update base_rtic set /*center_geom=st_geomfromgeojson(center),*/geom=st_geomfromgeojson(geometry)";
         jdbcTemplate.execute(sql);
     }
 

@@ -1,140 +1,105 @@
--- ----------------------------
--- Table structure for base_area
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_area";
-CREATE TABLE "public"."base_area" (
-                                      "id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
-                                      "type" varchar(10) COLLATE "pg_catalog"."default",
-                                      "name" varchar(30) COLLATE "pg_catalog"."default",
-                                      "center" varchar(256) COLLATE "pg_catalog"."default",
-                                      "geometry" text COLLATE "pg_catalog"."default",
-                                      "geom" "public"."geometry"
+
+drop table if exists base_area;
+create table base_area (
+  id varchar(36) not null,
+  type varchar(10),
+  name varchar(30),
+  center varchar(256),
+  geometry text,
+  geom geometry
 )
 ;
+comment on column base_area.id is '区域编号';
+comment on column base_area.type is '区域类型 ';
+comment on column base_area.name is '区域名称';
+comment on column base_area.center is '中心点坐标';
+comment on column base_area.geometry is '区域坐标';
 
--- ----------------------------
--- Table structure for base_area_road_rtic
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_area_road_rtic";
-CREATE TABLE "public"."base_area_road_rtic" (
-                                                "area_id" varchar(50) COLLATE "pg_catalog"."default",
-                                                "road_id" varchar(50) COLLATE "pg_catalog"."default",
-                                                "seq_no" int4,
-                                                "rtic_id" varchar(50) COLLATE "pg_catalog"."default"
+
+
+drop table if exists base_road;
+create table base_road (
+  id varchar(36) not null,
+  type varchar(10),
+  kind varchar(10),
+  name varchar(50),
+  startname varchar(50),
+  endname varchar(50),
+  direction varchar(10),
+  length float4,
+  center varchar(256),
+  geometry text,
+  geom geometry,
+  primary key (id)
+);
+
+
+drop table if exists base_rtic;
+create table base_rtic (
+  id varchar(50) not null,
+  name varchar(20),
+  startname varchar(50),
+  endname varchar(50),
+  length float4,
+  kind varchar(10),
+  width varchar(10),
+  speedlimit varchar(20),
+  direction varchar(10),
+  startpoint varchar(100),
+  endpoint varchar(100),
+  geometry text,
+  center varchar(100),
+  geom geometry,
+  primary key (id)
 )
 ;
+comment on column base_rtic.name is '路段名称';
+comment on column base_rtic.startname is '起始路名';
+comment on column base_rtic.endname is '结束路名';
+comment on column base_rtic.length is '路段长度  km';
+comment on column base_rtic.kind is '路段等级 1-高速 2-快速路  3 主干道 4 次干道支路';
+comment on column base_rtic.width is '路段宽度  m';
+comment on column base_rtic.speedlimit is '限速';
+comment on column base_rtic.direction is '1为北，依次顺时针方向';
+comment on column base_rtic.startpoint is '起点经纬度 以空格分隔';
+comment on column base_rtic.endpoint is '终点经纬度 以空格分隔';
+comment on column base_rtic.geometry is 'geojson格式';
+comment on column base_rtic.center is '中心点';
 
--- ----------------------------
--- Table structure for base_link
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_link";
-CREATE TABLE "public"."base_link" (
-                                      "id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
-                                      "geometry" text COLLATE "pg_catalog"."default",
-                                      "rtic_id" varchar(36) COLLATE "pg_catalog"."default",
-                                      "start_name" varchar(255) COLLATE "pg_catalog"."default",
-                                      "end_name" varchar(255) COLLATE "pg_catalog"."default",
-                                      "direction" int2,
-                                      "width" float8,
-                                      "length" float8,
-                                      "kind" varchar(5) COLLATE "pg_catalog"."default",
-                                      "geom" "public"."geometry"
-)
-;
-COMMENT ON TABLE "public"."base_link" IS '21q1link';
 
--- ----------------------------
--- Table structure for base_road
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_road";
-CREATE TABLE "public"."base_road" (
-                                      "id" varchar(36) COLLATE "pg_catalog"."default" NOT NULL,
-                                      "type" varchar(10) COLLATE "pg_catalog"."default",
-                                      "kind" varchar(10) COLLATE "pg_catalog"."default",
-                                      "name" varchar(50) COLLATE "pg_catalog"."default",
-                                      "startname" varchar(50) COLLATE "pg_catalog"."default",
-                                      "endname" varchar(50) COLLATE "pg_catalog"."default",
-                                      "direction" varchar(10) COLLATE "pg_catalog"."default",
-                                      "length" float4,
-                                      "center" varchar(256) COLLATE "pg_catalog"."default",
-                                      "geometry" text COLLATE "pg_catalog"."default",
-                                      "geom" "public"."geometry",
-                                      "center_geom" "public"."geometry"
-)
-;
 
--- ----------------------------
--- Table structure for base_rtic
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_rtic";
-CREATE TABLE "public"."base_rtic" (
-                                      "id" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                      "name" varchar(20) COLLATE "pg_catalog"."default",
-                                      "startname" varchar(20) COLLATE "pg_catalog"."default",
-                                      "endname" varchar(20) COLLATE "pg_catalog"."default",
-                                      "length" float4,
-                                      "kind" varchar(10) COLLATE "pg_catalog"."default",
-                                      "width" varchar(10) COLLATE "pg_catalog"."default",
-                                      "speedlimit" varchar(20) COLLATE "pg_catalog"."default",
-                                      "direction" varchar(10) COLLATE "pg_catalog"."default",
-                                      "startpoint" varchar(100) COLLATE "pg_catalog"."default",
-                                      "endpoint" varchar(100) COLLATE "pg_catalog"."default",
-                                      "geometry" text COLLATE "pg_catalog"."default",
-                                      "center" varchar(100) COLLATE "pg_catalog"."default",
-                                      "geom" "public"."geometry",
-                                      "center_geom" "public"."geometry"
-)
-;
+drop table if exists base_area_road_rtic;
+create table base_area_road_rtic (
+  area_id varchar(50),
+  road_id varchar(50),
+  seq_no int4,
+  rtic_id varchar(50)
+);
+create index in_base_area_road_rtic_area_id on base_area_road_rtic using btree (area_id);
+create index in_base_area_road_rtic_road_id on base_area_road_rtic using btree (road_id);
+create index in_base_area_road_rtic_rtic_id on base_area_road_rtic using btree (rtic_id);
 
--- ----------------------------
--- Table structure for base_rtic_link
--- ----------------------------
-DROP TABLE IF EXISTS "public"."base_rtic_link";
-CREATE TABLE "public"."base_rtic_link" (
-                                           "rticid" varchar(50) COLLATE "pg_catalog"."default",
-                                           "linkid" varchar(50) COLLATE "pg_catalog"."default",
-                                           "sort" int4
-)
-;
 
--- ----------------------------
--- Primary Key structure for table base_area
--- ----------------------------
-ALTER TABLE "public"."base_area" ADD CONSTRAINT "base_area_copy_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Indexes structure for table base_area_road_rtic
--- ----------------------------
-CREATE INDEX "inx_area_id_base_a_r_r" ON "public"."base_area_road_rtic" USING btree (
-    "area_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
-    );
-CREATE INDEX "inx_road_id_base_a_r_r" ON "public"."base_area_road_rtic" USING btree (
-    "road_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
-    );
-CREATE INDEX "inx_rtic_id_base_a_r_r" ON "public"."base_area_road_rtic" USING btree (
-    "rtic_id" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
-    );
-
--- ----------------------------
--- Primary Key structure for table base_road
--- ----------------------------
-ALTER TABLE "public"."base_road" ADD CONSTRAINT "base_road_pkey" PRIMARY KEY ("id");
-
--- ----------------------------
--- Primary Key structure for table base_rtic
--- ----------------------------
-ALTER TABLE "public"."base_rtic" ADD CONSTRAINT "base_rtic_pkey" PRIMARY KEY ("id");
+drop table if exists base_rtic_link;
+create table base_rtic_link (
+  rticid varchar(50),
+  linkid varchar(50),
+  sort int4,
+  linklen int4
+);
+create index in_base_rtic_link_rticid on base_rtic_link using btree (rticid);
+create index in_base_rtic_link_linkid on base_rtic_link using btree (linkid);
 
 
 DROP TABLE IF EXISTS "public"."rticfreespeed";
 CREATE TABLE "public"."rticfreespeed" (
-                                          "rticid" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                          "kind" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                          "speed" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                          "samplenum" varchar(50) COLLATE "pg_catalog"."default",
-                                          "length" float4 NOT NULL,
-                                          "weight" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                          "version" varchar(50) COLLATE "pg_catalog"."default"
+  "rticid" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "kind" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "speed" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "samplenum" varchar(50) COLLATE "pg_catalog"."default",
+  "length" float4 NOT NULL,
+  "weight" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "version" varchar(50) COLLATE "pg_catalog"."default"
 )
 ;
 COMMENT ON COLUMN "public"."rticfreespeed"."rticid" IS 'rticid';
@@ -148,12 +113,12 @@ COMMENT ON COLUMN "public"."rticfreespeed"."length" IS 'rtic长度';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."rticpattern";
 CREATE TABLE "public"."rticpattern" (
-                                        "rticid" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                        "kind" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                        "speed" float8 NOT NULL,
-                                        "length" float8 NOT NULL,
-                                        "traveltime" float8 NOT NULL,
-                                        "time" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
-                                        "week" int4
+"rticid" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+"kind" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+"speed" float8 NOT NULL,
+"length" float8 NOT NULL,
+"traveltime" float8 NOT NULL,
+"time" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+"week" int4
 )
 ;

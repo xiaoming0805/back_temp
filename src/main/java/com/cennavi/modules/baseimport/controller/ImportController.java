@@ -169,12 +169,12 @@ public class ImportController extends ResponseUtils {
                 BaseRtic baseRtic = new BaseRtic();
                 baseRtic.setId(ss[0]);
                 baseRtic.setName(ss[1]);
-                baseRtic.setStartName(ss[2]);
-                baseRtic.setEndName(ss[3]);
+                baseRtic.setStartname(ss[2]);
+                baseRtic.setEndname(ss[3]);
                 baseRtic.setLength(Float.parseFloat(ss[4]));
                 //baseRtic.setLaneNum(ss[5]);
                 baseRtic.setWidth(ss[6]);
-                baseRtic.setSpeedLimit(ss[7]);
+                baseRtic.setSpeedlimit(ss[7]);
                 baseRtic.setDirection(ss[8]);
                 baseRtic.setKind(ss[9]);
                 baseRtic.setStartpoint(ss[10]+","+ss[11]);
