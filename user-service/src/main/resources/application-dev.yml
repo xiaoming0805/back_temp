@@ -1,0 +1,27 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /user
+
+spring:
+  # PostgreSQL 数据源配置
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.130.19.140:15432/rsrm_service_cityroad_yantai_xianchang_road?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&rewriteBatchedStatements=true&useSSL=false
+    username: postgres
+    password: Cennavi_@2022
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+
+# 业务配置（从你的原项目复制）
+business:
+  driving-url: http://124.204.76.215:21009/route/v1/driving
+  track-op-url: https://minedata.cn/service/lbs/track/v1/history?key=a16f4a50c820446486f6be07adc235da
+
+# 日志
+logging:
+  level:
+    com.cennavi: debug
+    org.springframework.jdbc: debug  # 查看SQL执行情况

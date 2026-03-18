@@ -1,0 +1,15 @@
+server:
+  port: 8082  # 不同服务用不同端口
+  servlet:
+    context-path: /order
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.130.19.140:15432/rsrm_service_cityroad_yantai_xianchang_road?useUnicode=true&characterEncoding=utf-8
+    username: postgres
+    password: Cennavi_@2022
+
+logging:
+  level:
+    com.cennavi: debug

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: order-service
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.130.40.247:8848
+        namespace: zmy_test
+        group: zmy_test
+      config:
+        server-addr: 10.130.40.247:8848
+        namespace: zmy_test
+        group: zmy_test
+        file-extension: yaml
+
+  # 这里！config 和 cloud 平级
+  config:
+    import:
+      - optional:nacos:${spring.application.name}-${spring.profiles.active}.yaml?group=${spring.cloud.nacos.config.group}
+
+  profiles:
+    active: prod

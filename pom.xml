@@ -1,220 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.cennavi</groupId>
-	<artifactId>service_template2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>service_template2</name>
-	<description>Demo project for Spring Boot</description>
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <!-- 父工程坐标 -->
+    <groupId>com.cennavi</groupId>
+    <artifactId>service_template2-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-pool2</artifactId>
-<!--			<version>2.4.2</version>-->
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
-		</dependency>
+    <!-- 子模块声明（等创建好模块后逐步添加） -->
+    <modules>
+        <module>common</module>
+        <module>user-service</module>
+        <module>gateway</module>
+        <module>common</module>
+        <module>user-service</module>
+        <module>gateway</module>
+        <module>order-service</module>
+        <module>GB8181</module>
+        <!-- 其他模块后续添加 -->
+    </modules>
 
-		<!--swagger2 api 依赖-->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-spring-boot-starter</artifactId>
-			<version>1.9.6</version>
-			<exclusions>
-				<exclusion>
-					<groupId>io.springfox</groupId>
-					<artifactId>springfox-swagger-ui</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!--@data 注解 省去 get set 方法-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-		<!-- 整合 swagger2 方便 jdbctemplant 返回格式 转 bean 生成返回说明 -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
-		</dependency>
-		<!--swagger2 api 依赖   end-->
-<!-- =======================以下可以按需添加=====================================================-->
-		<!--空间操作 -->
-		<dependency>
-			<groupId>com.vividsolutions</groupId>
-			<artifactId>jts</artifactId>
-			<version>1.13</version>
-		</dependency>
+    <!-- 使用SpringBoot作为parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.5</version>
+        <relativePath/>
+    </parent>
 
-		<!--pbf-->
-		<dependency>
-			<groupId>com.vector</groupId>
-			<artifactId>vector</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/java/com/cennavi/modules/pbf/lib/vector-1.0.jar</systemPath>
-		</dependency>
+    <!-- 统一版本管理 -->
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<!--&lt;!&ndash;jackson&ndash;&gt;-->
-		<!--<dependency>-->
-			<!--<groupId>com.fasterxml.jackson.core</groupId>-->
-			<!--<artifactId>jackson-databind</artifactId>-->
-			<!--<version>2.11.2</version>-->
-		<!--</dependency>-->
+        <!-- SpringCloud 版本 -->
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
+        <!-- SpringCloud Alibaba 版本 -->
+        <spring-cloud-alibaba.version>2022.0.0.0</spring-cloud-alibaba.version>
 
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-referencing</artifactId>
-			<version>20.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-opengis</artifactId>
-			<version>20.3</version>
-		</dependency>
-		<!-- excel -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>3.12</version>
-		</dependency>
-		<!-- http/https tool /  HttpTool 工具类 -->
-		<dependency>
-			<groupId>com.ning</groupId>
-			<artifactId>async-http-client</artifactId>
-			<version>1.8.13</version>
-		</dependency>
-		<!-- 基础用户管理功能依赖 start -->
-		<dependency>
-			<groupId>com.github.whvcse</groupId>
-			<artifactId>easy-captcha</artifactId>
-			<version>1.6.2</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk15</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-		<!-- 日志部分 -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-			<version>3.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.12.4</version>
-		</dependency>
+        <!-- 常用依赖版本 -->
+        <lombok.version>1.18.30</lombok.version>
+        <hutool.version>5.8.23</hutool.version>
+        <knife4j.version>4.3.0</knife4j.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-io.version>2.15.1</commons-io.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
+        <commons-codec.version>1.16.0</commons-codec.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <jts.version>1.18.2</jts.version>
+        <geotools.version>28.2</geotools.version>
+        <poi.version>5.2.5</poi.version>
+        <async-http-client.version>2.12.3</async-http-client.version>
+        <easy-captcha.version>1.6.2</easy-captcha.version>
+        <json-lib.version>2.4</json-lib.version>
+        <elasticsearch.version>7.17.15</elasticsearch.version>
+        <clickhouse.version>0.4.6</clickhouse.version>
+    </properties>
 
-		<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>elasticsearch-rest-high-level-client</artifactId>
-			<version>${elasticsearch.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-all</artifactId>
-			<version>5.1.4</version>
-		</dependency>
-		<!-- 基础用户管理功能 end-->
+    <!-- 统一依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringCloud 依赖管理 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-		<!--链接 clickhouse 驱动 -->
-		<dependency>
-			<groupId>ru.yandex.clickhouse</groupId>
-			<artifactId>clickhouse-jdbc</artifactId>
-			<version>0.2.4</version>
-		</dependency>
-	</dependencies>
+            <!-- SpringCloud Alibaba 依赖管理 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-	<!--org.geotools 俩个包下载不下来 start -->
-	<repositories>
-		<repository>
-			<id>osgeo</id>
-			<name>OSGeo Release Repository</name>
-			<url>https://repo.osgeo.org/repository/release/</url>
-			<snapshots><enabled>false</enabled></snapshots>
-			<releases><enabled>true</enabled></releases>
-		</repository>
-		<repository>
-			<id>osgeo-snapshot</id>
-			<name>OSGeo Snapshot Repository</name>
-			<url>https://repo.osgeo.org/repository/snapshot/</url>
-			<snapshots><enabled>true</enabled></snapshots>
-			<releases><enabled>false</enabled></releases>
-		</repository>
-	</repositories>
-	<!--org.geotools 俩个包下载不下来 end -->
-	<build>
-		<finalName>service_template2</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<!-- 项目中单独引入第三方jar时，includeSystemScope值要为true-->
-					<includeSystemScope>true</includeSystemScope>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+            <!-- 项目内部模块（后续添加） -->
+            <dependency>
+                <groupId>com.cennavi</groupId>
+                <artifactId>common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
+            <!-- 常用第三方库版本锁定 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <!-- 其他依赖按照同样方式整理... -->
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- 项目通用的依赖（所有子模块都会继承） -->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- 仓库配置（继续保留你的geotools仓库） -->
+    <repositories>
+        <repository>
+            <id>osgeo</id>
+            <name>OSGeo Release Repository</name>
+            <url>https://repo.osgeo.org/repository/release/</url>
+            <snapshots><enabled>false</enabled></snapshots>
+            <releases><enabled>true</enabled></releases>
+        </repository>
+        <repository>
+            <id>osgeo-snapshot</id>
+            <name>OSGeo Snapshot Repository</name>
+            <url>https://repo.osgeo.org/repository/snapshot/</url>
+            <snapshots><enabled>true</enabled></snapshots>
+            <releases><enabled>false</enabled></releases>
+        </repository>
+    </repositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
